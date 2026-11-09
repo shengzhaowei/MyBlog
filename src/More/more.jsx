@@ -7,7 +7,7 @@ const Me = () => {
     <div className='mt-8 mx-auto w-3/4 lg:w-2/4 h-[50svh] text-sm md:text-lg lg:text-xl'>
       <div className="text-start">
         <p className="leading-relaxed">
-          你好，我是 shengzhaowei。欢迎来到我在互联网上的一角！我会在这里分享自己的工作、项目，以及正在学习的东西。
+          你好，我是 盛兆威。欢迎来到我在互联网上的一角！我会在这里分享自己的工作、项目，以及正在学习的东西。
         </p>
       </div>
 
@@ -94,7 +94,7 @@ const Self = () => {
     <div className='mt-8 mx-auto w-3/4 lg:w-2/4 h-[50svh] text-sm md:text-lg lg:text-xl'>
       <div className="text-center">
         <p className="leading-relaxed">
-          你好，我是 shengzhaowei。欢迎来到我在互联网上的一角！
+          你好，我是 盛兆威。欢迎来到我在互联网上的一角！
         </p>
         <p className="my-8 leading-relaxed">
           以后我会慢慢补充这里的内容。感谢来访！

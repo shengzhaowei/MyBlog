@@ -14,12 +14,39 @@ const usePageMeta = (title, description) => {
 
 const SiteHeader = ({ current, postsHref }) => (
   <header className="ed-header">
-    <Link className="ed-site-name" to="/">shengzhaowei</Link>
+    <Link className="ed-site-name" to="/">盛兆威</Link>
     <nav className="ed-nav" aria-label="主导航">
       <Link to="/" aria-current={current === 'about' ? 'page' : undefined}>关于</Link>
       <a href={postsHref} aria-current={current === 'posts' ? 'page' : undefined}>文章</a>
     </nav>
   </header>
+);
+
+const SocialLinks = () => (
+  <div className="ed-socials" aria-label="社交链接">
+    <a
+      href="https://x.com/szw666888"
+      target="_blank"
+      rel="noopener noreferrer"
+      aria-label="在 X 上找到我"
+      title="X"
+    >
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+      </svg>
+    </a>
+    <a
+      href="https://github.com/shengzhaowei"
+      target="_blank"
+      rel="noopener noreferrer"
+      aria-label="在 GitHub 上找到我"
+      title="GitHub"
+    >
+      <svg viewBox="0 0 16 16" aria-hidden="true">
+        <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z" />
+      </svg>
+    </a>
+  </div>
 );
 
 const Footer = ({ note, href, label }) => (
@@ -31,8 +58,8 @@ const Footer = ({ note, href, label }) => (
 
 export function EditorialHome() {
   usePageMeta(
-    'shengzhaowei · 个人网站',
-    'shengzhaowei 的个人网站，记录工作、项目、学习与一些长期思考。'
+    '盛兆威 · 个人网站',
+    '盛兆威 的个人网站，记录工作、项目、学习与一些长期思考。'
   );
 
   return (
@@ -43,16 +70,19 @@ export function EditorialHome() {
 
         <main id="ed-main">
           <section className="ed-hero" aria-labelledby="about-title">
-            <img
-              className="ed-portrait"
-              src={`${process.env.PUBLIC_URL}/avatar.png`}
-              alt="shengzhaowei 的手绘头像"
-              width="183"
-              height="183"
-            />
+            <div className="ed-hero-media">
+              <img
+                className="ed-portrait"
+                src={`${process.env.PUBLIC_URL}/mascot.png`}
+                alt="盛兆威 的手绘猫咪插画：一只头顶灯泡的猫"
+                width="680"
+                height="680"
+              />
+              <SocialLinks />
+            </div>
             <div className="ed-bio">
               <h1 id="about-title">关于</h1>
-              <p>你好，我是 shengzhaowei。欢迎来到我在互联网上的一角。我会在这里记录工作、个人项目，以及正在学习的东西。</p>
+              <p>你好，我是 盛兆威。欢迎来到我在互联网上的一角。我会在这里记录工作、个人项目，以及正在学习的东西。</p>
               <p>这里不追求高频更新，只保留那些经过实践、值得以后再看一遍的东西。</p>
             </div>
           </section>
@@ -87,7 +117,7 @@ export function EditorialHome() {
           </section>
         </main>
 
-        <Footer note="© 2026 shengzhaowei" href="#ed-main" label="回到顶部 ↑" />
+        <Footer note="© 2026 盛兆威" href="#ed-main" label="回到顶部 ↑" />
       </div>
     </div>
   );
@@ -95,7 +125,7 @@ export function EditorialHome() {
 
 export function BlogPost() {
   usePageMeta(
-    '把个人网站当作一个长期项目 | shengzhaowei',
+    '把个人网站当作一个长期项目 | 盛兆威',
     '从一次个人网站改版开始，重新思考写作、设计与持续维护。'
   );
 
@@ -175,7 +205,7 @@ export function BlogPost() {
           </article>
         </main>
 
-        <Footer note="© 2026 shengzhaowei" href="/" label="返回首页 →" />
+        <Footer note="© 2026 盛兆威" href="/" label="返回首页 →" />
       </div>
     </div>
   );

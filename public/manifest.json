@@ -1,9 +1,9 @@
 {
-  "short_name": "个人网站",
-  "name": "shengzhaowei 的个人网站",
+  "short_name": "盛兆威",
+  "name": "盛兆威 的个人网站",
   "icons": [
     {
-      "src": "avatar.png",
+      "src": "mascot.png",
       "type": "image/png",
       "sizes": "any"
     }
