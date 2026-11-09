@@ -111,6 +111,7 @@ const Self = () => {
 
         <img
           src={cat}
+          alt="A cat illustration"
           className="mx-auto my-6"
         />
       </div>

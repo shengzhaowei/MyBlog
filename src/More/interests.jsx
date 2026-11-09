@@ -7,7 +7,7 @@ import { useEffect, Fragment } from 'react';
     },[])
     return (
         <div className="w-screen h-screen bg-[#fffaf0]">
-        <img></img> {/* add images later */}
+        {/* add images later */}
         <div className='relative -bottom-1/3 align-center text-center'>
         <header data-aos="fade-in"  data-aos-delay="0" className="
         text-black font-bold text-4xl md:text-5xl lg:text-6xl text-center mb-8">

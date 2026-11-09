@@ -1,23 +1,14 @@
 import { NavLink, useLocation } from 'react-router-dom';
-import React, {useEffect, useState} from "react";
-import aos from 'aos';
-import 'aos/dist/aos.css'
-import { TypeAnimation } from "react-type-animation";
-import ReadMoreReact from 'read-more-react';
-import ReactTyped from "react-typed";
-import { FaHome
-  } from 'react-icons/fa'
-
-const withoutSidebarRoute = ["/"];
+import { FaHome } from 'react-icons/fa'
 
 const Navigation = () => {
     const handleClick = () => {
-        window.target.reload()
+        window.location.reload()
         return null;
     }
     const {pathname} = useLocation();
 
-    if (pathname != "/")
+    if (pathname !== "/")
 
     return (
     <div className='fixed top-4 left-4'>

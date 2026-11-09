@@ -1,5 +1,4 @@
 import React, {createContext} from "react";
-import { useEffect } from "react";
 import { DarkModeSwitch } from "react-toggle-dark-mode";
 
 export const DarkModeContext = createContext();
