@@ -1,8 +1,16 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import './editorial.css';
 
 const POST_PATH = '/posts/personal-website-as-long-term-project';
+
+const TOC_ITEMS = [
+  { id: 'corner', label: '一个属于自己的角落' },
+  { id: 'reading', label: '先让内容易读' },
+  { id: 'subtraction', label: '设计是不断的减法' },
+  { id: 'writing', label: '写文章，也是在整理经验' },
+  { id: 'maintain', label: '小步发布，长期维护' },
+];
 
 const usePageMeta = (title, description) => {
   useEffect(() => {
@@ -10,6 +18,95 @@ const usePageMeta = (title, description) => {
     const meta = document.querySelector('meta[name="description"]');
     if (meta) meta.setAttribute('content', description);
   }, [title, description]);
+};
+
+const reducedMotion = () =>
+  typeof window !== 'undefined' &&
+  window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+// 用 requestAnimationFrame 节流滚动监听，避免滚动时频繁重渲染。
+const useScrollFrame = (update) => {
+  const updateRef = useRef(update);
+  updateRef.current = update;
+
+  useEffect(() => {
+    let frame = 0;
+    const run = () => {
+      frame = 0;
+      updateRef.current();
+    };
+    const onScroll = () => {
+      if (!frame) frame = window.requestAnimationFrame(run);
+    };
+    run();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll);
+    return () => {
+      window.removeEventListener('scroll', onScroll);
+      window.removeEventListener('resize', onScroll);
+      if (frame) window.cancelAnimationFrame(frame);
+    };
+  }, []);
+};
+
+const ReadingProgress = () => {
+  const [progress, setProgress] = useState(0);
+  useScrollFrame(() => {
+    const max = document.documentElement.scrollHeight - window.innerHeight;
+    const next = max > 0 ? Math.min(1, Math.max(0, window.scrollY / max)) : 0;
+    setProgress((prev) => (Math.abs(prev - next) > 0.002 ? next : prev));
+  });
+
+  return (
+    <div className="ed-progress" aria-hidden="true">
+      <div className="ed-progress-bar" style={{ transform: `scaleX(${progress})` }} />
+    </div>
+  );
+};
+
+const BackToTop = () => {
+  const [visible, setVisible] = useState(false);
+  useScrollFrame(() => {
+    const next = window.scrollY > 480;
+    setVisible((prev) => (prev === next ? prev : next));
+  });
+
+  return (
+    <button
+      type="button"
+      className={`ed-to-top${visible ? ' is-visible' : ''}`}
+      onClick={() =>
+        window.scrollTo({ top: 0, behavior: reducedMotion() ? 'auto' : 'smooth' })
+      }
+      aria-label="回到顶部"
+      title="回到顶部"
+      tabIndex={visible ? 0 : -1}
+    >
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path
+          d="M12 19V5m0 0-6 6m6-6 6 6"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="1.8"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+      </svg>
+    </button>
+  );
+};
+
+const useActiveSection = () => {
+  const [active, setActive] = useState(TOC_ITEMS[0].id);
+  useScrollFrame(() => {
+    let current = TOC_ITEMS[0].id;
+    TOC_ITEMS.forEach(({ id }) => {
+      const element = document.getElementById(id);
+      if (element && element.getBoundingClientRect().top <= 140) current = id;
+    });
+    setActive((prev) => (prev === current ? prev : current));
+  });
+  return active;
 };
 
 const SiteHeader = ({ current, postsHref }) => (
@@ -77,6 +174,7 @@ export function EditorialHome() {
                 alt="盛兆威 的手绘猫咪插画：一只头顶灯泡的猫"
                 width="680"
                 height="680"
+                decoding="async"
               />
               <SocialLinks />
             </div>
@@ -119,6 +217,7 @@ export function EditorialHome() {
 
         <Footer note="© 2026 盛兆威" href="#ed-main" label="回到顶部 ↑" />
       </div>
+      <BackToTop />
     </div>
   );
 }
@@ -133,8 +232,11 @@ export function BlogPost() {
     window.scrollTo(0, 0);
   }, []);
 
+  const activeSection = useActiveSection();
+
   return (
     <div className="editorial">
+      <ReadingProgress />
       <a className="ed-skip" href="#ed-article">跳到正文</a>
       <div className="ed-page ed-blog">
         <SiteHeader current="posts" postsHref="/#posts" />
@@ -154,11 +256,17 @@ export function BlogPost() {
               <summary>本文目录</summary>
               <nav className="ed-toc-nav" aria-label="文章目录">
                 <ul>
-                  <li><a href="#corner">一个属于自己的角落</a></li>
-                  <li><a href="#reading">先让内容易读</a></li>
-                  <li><a href="#subtraction">设计是不断的减法</a></li>
-                  <li><a href="#writing">写文章，也是在整理经验</a></li>
-                  <li><a href="#maintain">小步发布，长期维护</a></li>
+                  {TOC_ITEMS.map(({ id, label }) => (
+                    <li key={id}>
+                      <a
+                        href={`#${id}`}
+                        className={activeSection === id ? 'is-active' : undefined}
+                        aria-current={activeSection === id ? 'location' : undefined}
+                      >
+                        {label}
+                      </a>
+                    </li>
+                  ))}
                 </ul>
               </nav>
             </details>
@@ -207,6 +315,7 @@ export function BlogPost() {
 
         <Footer note="© 2026 盛兆威" href="/" label="返回首页 →" />
       </div>
+      <BackToTop />
     </div>
   );
 }

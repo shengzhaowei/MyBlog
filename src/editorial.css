@@ -42,6 +42,7 @@
   text-decoration-color: var(--ed-rule);
   text-decoration-thickness: 1px;
   text-underline-offset: 0.22em;
+  transition: color 0.18s ease, text-decoration-color 0.18s ease;
 }
 
 .editorial a:hover {
@@ -442,7 +443,172 @@
   }
 }
 
+/* ---------- 交互与动效 ---------- */
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 2rem;
+}
+
+.editorial {
+  -webkit-tap-highlight-color: transparent;
+}
+
+@keyframes ed-rise {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.ed-page {
+  animation: ed-rise 0.45s ease-out both;
+}
+
+.ed-nav a:hover,
+.ed-site-name:hover {
+  color: var(--ed-accent);
+}
+
+.ed-posts a:hover,
+.ed-post a:hover,
+.ed-post-footer a:hover {
+  color: var(--ed-accent);
+}
+
+.ed-posts a::after {
+  content: "→";
+  display: inline-block;
+  margin-left: 0.45rem;
+  color: var(--ed-accent);
+  opacity: 0;
+  transform: translateX(-4px);
+  transition: opacity 0.18s ease, transform 0.18s ease;
+}
+
+.ed-posts a:hover::after,
+.ed-posts a:focus-visible::after {
+  opacity: 1;
+  transform: none;
+}
+
+.ed-toc-nav a {
+  transition: color 0.18s ease, border-left-color 0.18s ease;
+}
+
+.ed-toc-nav a.is-active,
+.ed-toc-nav a.is-active:hover {
+  color: var(--ed-accent);
+  border-left-color: var(--ed-accent);
+  font-weight: 500;
+}
+
+.ed-toc summary {
+  transition: color 0.18s ease;
+}
+
+.ed-toc summary:hover {
+  color: var(--ed-text);
+}
+
+.ed-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  z-index: 40;
+  pointer-events: none;
+}
+
+.ed-progress-bar {
+  width: 100%;
+  height: 100%;
+  background: var(--ed-accent);
+  transform: scaleX(0);
+  transform-origin: left center;
+}
+
+.ed-to-top {
+  position: fixed;
+  right: 1.25rem;
+  bottom: 1.25rem;
+  z-index: 35;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  padding: 0;
+  border: 1px solid var(--ed-rule);
+  border-radius: 50%;
+  background: var(--ed-bg);
+  color: var(--ed-muted);
+  cursor: pointer;
+  box-shadow: 0 2px 12px rgba(36, 36, 33, 0.07);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(6px);
+  transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s ease,
+    color 0.18s ease, border-color 0.18s ease;
+}
+
+.ed-to-top.is-visible {
+  opacity: 1;
+  visibility: visible;
+  transform: none;
+}
+
+.ed-to-top:hover {
+  color: var(--ed-accent);
+  border-color: var(--ed-accent);
+}
+
+.ed-to-top:focus-visible {
+  outline: 2px solid var(--ed-accent);
+  outline-offset: 3px;
+}
+
+.ed-to-top svg {
+  width: 1.1rem;
+  height: 1.1rem;
+}
+
+@media (max-width: 40rem) {
+  .ed-socials a {
+    width: 2.5rem;
+    height: 2.5rem;
+  }
+
+  .ed-socials svg {
+    width: 1.2rem;
+    height: 1.2rem;
+  }
+
+  .ed-to-top {
+    right: 1rem;
+    bottom: 1rem;
+    width: 2.75rem;
+    height: 2.75rem;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  .ed-page {
+    animation: none;
+  }
+
+  .ed-posts a::after,
+  .ed-to-top,
   .ed-socials a {
     transition: none;
   }
