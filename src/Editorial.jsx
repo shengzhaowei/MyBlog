@@ -109,15 +109,123 @@ const useActiveSection = () => {
   return active;
 };
 
-const SiteHeader = ({ current, postsHref }) => (
-  <header className="ed-header">
-    <Link className="ed-site-name" to="/">盛兆威</Link>
-    <nav className="ed-nav" aria-label="主导航">
-      <Link to="/" aria-current={current === 'about' ? 'page' : undefined}>关于</Link>
-      <a href={postsHref} aria-current={current === 'posts' ? 'page' : undefined}>文章</a>
-    </nav>
-  </header>
+// 区块进入视口时淡入；减少动效或旧浏览器下直接显示。
+// 首屏内可见的元素同步标记，避免依赖 IntersectionObserver 的回调时机。
+const useReveal = () => {
+  useEffect(() => {
+    const elements = Array.from(document.querySelectorAll('.ed-reveal'));
+    const markVisible = (element) => element.classList.add('is-visible');
+
+    elements.forEach((element) => {
+      const rect = element.getBoundingClientRect();
+      if (rect.top < window.innerHeight * 0.92) markVisible(element);
+    });
+
+    const pending = elements.filter((element) => !element.classList.contains('is-visible'));
+    if (reducedMotion() || !('IntersectionObserver' in window) || !pending.length) {
+      pending.forEach(markVisible);
+      return undefined;
+    }
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('is-visible');
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { rootMargin: '0px 0px -10% 0px', threshold: 0.06 },
+    );
+    pending.forEach((element) => observer.observe(element));
+    return () => observer.disconnect();
+  }, []);
+};
+
+const getInitialTheme = () => {
+  if (typeof window === 'undefined') return 'light';
+  const attr = document.documentElement.getAttribute('data-theme');
+  if (attr === 'dark' || attr === 'light') return attr;
+  return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+};
+
+const applyTheme = (theme) => {
+  document.documentElement.setAttribute('data-theme', theme);
+  const meta = document.querySelector('meta[name="theme-color"]');
+  if (meta) meta.setAttribute('content', theme === 'dark' ? '#1c1a17' : '#fffdf8');
+  try {
+    localStorage.setItem('theme', theme);
+  } catch (error) {
+    /* 隐私模式下无法存储时忽略 */
+  }
+};
+
+const SunIcon = () => (
+  <svg viewBox="0 0 24 24" aria-hidden="true">
+    <circle cx="12" cy="12" r="4.2" fill="none" stroke="currentColor" strokeWidth="1.7" />
+    <path
+      d="M12 3v2.2M12 18.8V21M3 12h2.2M18.8 12H21M5.4 5.4l1.6 1.6M17 17l1.6 1.6M18.6 5.4 17 7M7 17l-1.6 1.6"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.7"
+      strokeLinecap="round"
+    />
+  </svg>
 );
+
+const MoonIcon = () => (
+  <svg viewBox="0 0 24 24" aria-hidden="true">
+    <path
+      d="M20.6 14.2A8.6 8.6 0 0 1 9.8 3.4a8.6 8.6 0 1 0 10.8 10.8Z"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.7"
+      strokeLinejoin="round"
+    />
+  </svg>
+);
+
+const ThemeToggle = () => {
+  const [theme, setTheme] = useState(getInitialTheme);
+
+  useEffect(() => {
+    applyTheme(theme);
+  }, [theme]);
+
+  return (
+    <button
+      type="button"
+      className="ed-theme-toggle"
+      onClick={() => setTheme((prev) => (prev === 'dark' ? 'light' : 'dark'))}
+      aria-label={theme === 'dark' ? '切换到浅色模式' : '切换到深色模式'}
+      title={theme === 'dark' ? '切换到浅色模式' : '切换到深色模式'}
+    >
+      {theme === 'dark' ? <SunIcon /> : <MoonIcon />}
+    </button>
+  );
+};
+
+const SiteHeader = ({ current, postsHref }) => {
+  const [scrolled, setScrolled] = useState(false);
+  useScrollFrame(() => {
+    const next = window.scrollY > 8;
+    setScrolled((prev) => (prev === next ? prev : next));
+  });
+
+  return (
+    <header className={`ed-header${scrolled ? ' is-scrolled' : ''}`}>
+      <Link className="ed-site-name" to="/">盛兆威</Link>
+      <div className="ed-header-side">
+        <nav className="ed-nav" aria-label="主导航">
+          <Link to="/" aria-current={current === 'about' ? 'page' : undefined}>关于</Link>
+          <a href={postsHref} aria-current={current === 'posts' ? 'page' : undefined}>文章</a>
+        </nav>
+        <ThemeToggle />
+      </div>
+    </header>
+  );
+};
 
 const SocialLinks = () => (
   <div className="ed-socials" aria-label="社交链接">
@@ -158,6 +266,7 @@ export function EditorialHome() {
     '盛兆威 · 个人网站',
     '盛兆威 的个人网站，记录工作、项目、学习与一些长期思考。'
   );
+  useReveal();
 
   return (
     <div className="editorial">
@@ -185,7 +294,7 @@ export function EditorialHome() {
             </div>
           </section>
 
-          <section className="ed-section" id="posts">
+          <section className="ed-section ed-reveal" id="posts">
             <h2>文章</h2>
             <ul className="ed-list ed-posts">
               <li>
@@ -195,7 +304,7 @@ export function EditorialHome() {
             </ul>
           </section>
 
-          <section className="ed-section" id="now">
+          <section className="ed-section ed-reveal" id="now">
             <h2>近况</h2>
             <ul className="ed-list ed-notes">
               <li>
@@ -209,7 +318,7 @@ export function EditorialHome() {
             </ul>
           </section>
 
-          <section className="ed-section" id="more">
+          <section className="ed-section ed-reveal" id="more">
             <h2>更多</h2>
             <p>工作、爱好，以及介于两者之间的日常。这里会慢慢留下我的项目、阅读和好奇心，也会保留一些暂时没有答案的问题。</p>
           </section>
@@ -233,6 +342,7 @@ export function BlogPost() {
   }, []);
 
   const activeSection = useActiveSection();
+  useReveal();
 
   return (
     <div className="editorial">
