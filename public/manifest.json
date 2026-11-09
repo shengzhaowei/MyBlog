@@ -1,0 +1,15 @@
+{
+  "short_name": "MyBlog",
+  "name": "shengzhaowei - MyBlog",
+  "icons": [
+    {
+      "src": "avatar.png",
+      "type": "image/png",
+      "sizes": "any"
+    }
+  ],
+  "start_url": ".",
+  "display": "standalone",
+  "theme_color": "#fffaf0",
+  "background_color": "#ffffff"
+}
