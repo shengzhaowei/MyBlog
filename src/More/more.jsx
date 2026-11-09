@@ -1,21 +1,19 @@
-import React, { useState, useRef } from "react";
+import React, { useState } from "react";
 import cat from './Images/cat.png';
 import coc from './Images/clashofclans.png';
 
 const Me = () => {
   return (
     <div className='mt-8 mx-auto w-3/4 lg:w-2/4 h-[50svh] text-sm md:text-lg lg:text-xl'>
-      {/* TODO: replace this placeholder with your own bio */}
       <div className="text-start">
         <p className="leading-relaxed">
-          Hi, I'm shengzhaowei. Welcome to my corner of the internet!
-          I'll be sharing my work, projects and things I'm learning here.
+          你好，我是 shengzhaowei。欢迎来到我在互联网上的一角！我会在这里分享自己的工作、项目，以及正在学习的东西。
         </p>
       </div>
 
       <div className="text-start mt-10">
         <p className="leading-relaxed">
-          This section is a placeholder — add your own experience, skills and projects here.
+          这一部分暂时还是占位内容，之后会在这里补充我的经历、技能和项目。
         </p>
       </div>
     </div>
@@ -25,16 +23,12 @@ const Me = () => {
 const Hobbies = () => {
   const [position, setPosition] = useState({ x: 0, y: 0 });
   const [showImage, setShowImage] = useState(false);
-  const containerRef = useRef(null);
 
   const handleMouseMove = (e) => {
-    if (containerRef.current) {
-      const rect = containerRef.current.getBoundingClientRect();
-      const x = e.clientX;
-      const y = e.clientY - rect.top;
+    const x = e.clientX;
+    const y = e.clientY;
 
-      setPosition({ x, y });
-    }
+    setPosition({ x, y });
   };
 
   const handleMouseEnter = () => {
@@ -49,32 +43,29 @@ const Hobbies = () => {
     <div className='mt-8 mx-auto w-3/4 lg:w-2/4 h-[50svh] text-sm md:text-lg lg:text-xl'>
       <div className="text-start">
         <p className="leading-relaxed">
-          Outside of software, I like to do a variety of things in my spare time.
-          Recently, I've been pretty focused on getting better at climbing.
-          If you have any helpful tips for improving quickly as a beginner, let me know!
+          工作之外，我在空闲时喜欢尝试各种事情。最近比较专注的是攀岩，想尽快把基本功练好。如果你有适合新手的提升建议，欢迎告诉我！
         </p>
       </div>
 
       <div className="mt-10 text-start">
         <p className="leading-relaxed">
-          Some other hobbies I enjoy are: reading (<a target='_blank' rel='noopener noreferrer' href='https://myanimelist.net/' className="font-bold font-satoshi italic pr-1 -ml-1 text-sumi hover:text-sumi-dark dark:text-white"> manga </a> and books), swimming, and going to the gym.
+          其他爱好还有阅读（<a target='_blank' rel='noopener noreferrer' href='https://myanimelist.net/' className="font-bold font-satoshi italic pr-1 -ml-1 text-sumi hover:text-sumi-dark dark:text-white">漫画</a>和书）、游泳，以及去健身房锻炼。
         </p>
       </div>
 
       <div className="mt-10 text-start">
         <p className="leading-relaxed">
-          I haven't been playing video games recently, but I'm proud that I've completed
+          最近没有怎么玩电子游戏，不过我挺自豪自己通关过
           <a
             target="_blank"
             href='https://supercell.com/en/games/clashofclans/'
             className="pl-1 font-bold font-satoshi italic pr-1 text-sumi hover:text-sumi-dark dark:text-white"
             rel="noopener noreferrer"
-            ref={containerRef}
             onMouseMove={handleMouseMove}
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
           >
-            Clash of Clans.
+            《部落冲突》。
           </a>
           {showImage && (
             <div
@@ -86,12 +77,12 @@ const Hobbies = () => {
             >
               <img
                 src={coc}
-                alt="Hover"
+                alt="悬停预览图"
                 className="w-[128] h-32 object-cover rounded-md shadow-lg opacity-90"
               />
             </div>
           )}
-          I haven't had as much time recently, but I used to play the other supercell games as well.
+          最近时间不多，但以前也玩过 Supercell 的其他游戏。
         </p>
       </div>
     </div>
@@ -103,15 +94,15 @@ const Self = () => {
     <div className='mt-8 mx-auto w-3/4 lg:w-2/4 h-[50svh] text-sm md:text-lg lg:text-xl'>
       <div className="text-center">
         <p className="leading-relaxed">
-          Hi there, I'm shengzhaowei. Welcome to my corner of the internet!
+          你好，我是 shengzhaowei。欢迎来到我在互联网上的一角！
         </p>
         <p className="my-8 leading-relaxed">
-          I'll probably add more to this site later. Thanks for visiting!
+          以后我会慢慢补充这里的内容。感谢来访！
         </p>
 
         <img
           src={cat}
-          alt="A cat illustration"
+          alt="一只猫的插画"
           className="mx-auto my-6"
         />
       </div>
@@ -125,25 +116,25 @@ const More = ({selected, setSelected}) => {
         <section id='more' className="relative top-[10%]
         text-center mt-4 mb-6 md:mb-12 text-md sm:text-lg md:text-xl dark:text-white">
           <div className="flex justify-center h-min mb-2">
-            <p className="font-bold mr-1 md:mr-1"> about my  </p>
+            <p className="font-bold mr-1 md:mr-1">关于我的</p>
 
             <button
               className={`mr-2 md:mr-4 ${selected === "work" ? "font-bold" : "opacity-30"}`}
               onClick={() => setSelected("work")}
             >
-              work
+              工作
             </button>
             <button
               className={`mr-2 md:mr-4 ${selected === "hobbies" ? "font-bold" : "opacity-30"}`}
               onClick={() => setSelected("hobbies")}
             >
-              hobbies
+              爱好
             </button>
             <button
               className={`mr-2 md:mr-4 ${selected === "self" ? "font-bold" : "opacity-30"}`}
               onClick={() => setSelected("self")}
             >
-              self
+              自我
             </button>
           </div>
           <div className="flex justify-center align-center">

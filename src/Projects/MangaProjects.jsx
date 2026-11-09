@@ -10,19 +10,18 @@ const Projecttwo = () => {
       <div className='relative -bottom-1/3 align-center text-center'>
       <header data-aos="fade-in"  data-aos-delay="0" className="
       text-black font-bold text-4xl md:text-5xl lg:text-6xl text-center mb-8">
-        (In Progress)
+        漫画推荐项目（进行中）
       </header>
       <Fragment data-aos="fade-in"  data-aos-delay="200">
     </Fragment>
       <h3
-      className='font-bold text-xl md:text-2xl lg:text-3xl mt-16'>Project details </h3>
+      className='font-bold text-xl md:text-2xl lg:text-3xl mt-16'>项目详情</h3>
       <p data-aos="fade-in"  data-aos-delay="600"
       className='mt-12 text-center mb-12 w-auto px-40'>
-      Database of Manga titles, genres, rating, etc. generated with python web-scraper. Interactive web app that
-      generates manga recommendations with an algorithm not-unlike Spotify's Discover Weekly.
-      Uses Python, Next.js, Superbase, Tailwind, and ...
+      一个由 Python 爬虫生成的漫画数据库，收录标题、类型、评分等信息。交互式网页应用会用类似 Spotify「每周发现」的算法生成漫画推荐。
+      使用 Python、Next.js、Supabase、Tailwind 等技术。
       </p>
-      <p>[work in progress]</p>
+      <p>仍在制作中</p>
       </div>
     </div>
   );

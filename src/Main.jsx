@@ -16,7 +16,7 @@ const Main = () => {
       <div className="relative top-[10%] flex flex-col dark:text-white">
         <div className='flex flex-col justify-center items-center'>
             <button onClick={()=>window.location.reload()} className='rounded-full dark:shadow-2xl dark:shadow-yellow-500'>
-              <img src={mascot} alt="Site mascot" height={100} width={100} />
+              <img src={mascot} alt="站点吉祥物" height={100} width={100} />
             </button>
             <h1 className='text-black dark:text-white font-bold text-4xl md:text-5xl lg:text-6xl text-center font-tnr'> shengzhaowei </h1>
         </div>

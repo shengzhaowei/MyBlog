@@ -1,6 +1,6 @@
 {
-  "short_name": "MyBlog",
-  "name": "shengzhaowei - MyBlog",
+  "short_name": "个人网站",
+  "name": "shengzhaowei 的个人网站",
   "icons": [
     {
       "src": "avatar.png",
@@ -10,6 +10,6 @@
   ],
   "start_url": ".",
   "display": "standalone",
-  "theme_color": "#fffaf0",
+  "theme_color": "#fffdf8",
   "background_color": "#ffffff"
 }
