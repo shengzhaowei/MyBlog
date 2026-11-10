@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import './editorial.css';
 
 const POST_PATH = '/posts/personal-website-as-long-term-project';
+export const POST_MEMORY_PATH = '/posts/context-window-as-cache';
 
 const TOC_ITEMS = [
   { id: 'corner', label: '一个属于自己的角落' },
@@ -12,7 +13,7 @@ const TOC_ITEMS = [
   { id: 'maintain', label: '小步发布，长期维护' },
 ];
 
-const usePageMeta = (title, description) => {
+export const usePageMeta = (title, description) => {
   useEffect(() => {
     document.title = title;
     const meta = document.querySelector('meta[name="description"]');
@@ -49,7 +50,7 @@ const useScrollFrame = (update) => {
   }, []);
 };
 
-const ReadingProgress = () => {
+export const ReadingProgress = () => {
   const [progress, setProgress] = useState(0);
   useScrollFrame(() => {
     const max = document.documentElement.scrollHeight - window.innerHeight;
@@ -64,7 +65,7 @@ const ReadingProgress = () => {
   );
 };
 
-const BackToTop = () => {
+export const BackToTop = () => {
   const [visible, setVisible] = useState(false);
   useScrollFrame(() => {
     const next = window.scrollY > 480;
@@ -96,11 +97,11 @@ const BackToTop = () => {
   );
 };
 
-const useActiveSection = () => {
-  const [active, setActive] = useState(TOC_ITEMS[0].id);
+export const useActiveSection = (items = TOC_ITEMS) => {
+  const [active, setActive] = useState(items[0].id);
   useScrollFrame(() => {
-    let current = TOC_ITEMS[0].id;
-    TOC_ITEMS.forEach(({ id }) => {
+    let current = items[0].id;
+    items.forEach(({ id }) => {
       const element = document.getElementById(id);
       if (element && element.getBoundingClientRect().top <= 140) current = id;
     });
@@ -111,7 +112,7 @@ const useActiveSection = () => {
 
 // 区块进入视口时淡入；减少动效或旧浏览器下直接显示。
 // 首屏内可见的元素同步标记，避免依赖 IntersectionObserver 的回调时机。
-const useReveal = () => {
+export const useReveal = () => {
   useEffect(() => {
     const elements = Array.from(document.querySelectorAll('.ed-reveal'));
     const markVisible = (element) => element.classList.add('is-visible');
@@ -206,7 +207,7 @@ const ThemeToggle = () => {
   );
 };
 
-const SiteHeader = ({ current, postsHref }) => {
+export const SiteHeader = ({ current, postsHref }) => {
   const [scrolled, setScrolled] = useState(false);
   useScrollFrame(() => {
     const next = window.scrollY > 8;
@@ -254,7 +255,7 @@ const SocialLinks = () => (
   </div>
 );
 
-const Footer = ({ note, href, label }) => (
+export const Footer = ({ note, href, label }) => (
   <footer className="ed-footer">
     <p>{note}</p>
     <a href={href}>{label}</a>
@@ -297,6 +298,10 @@ export function EditorialHome() {
           <section className="ed-section ed-reveal" id="posts">
             <h2>文章</h2>
             <ul className="ed-list ed-posts">
+              <li>
+                <Link to={POST_MEMORY_PATH}>把上下文窗口当作缓存来设计</Link>
+                <time dateTime="2026-11-10">2026.11.10</time>
+              </li>
               <li>
                 <Link to={POST_PATH}>把个人网站当作一个长期项目</Link>
                 <time dateTime="2026-11-09">2026.11.09</time>
