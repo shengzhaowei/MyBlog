@@ -357,7 +357,9 @@
 
 .ed-post > p,
 .ed-post > ul,
-.ed-post > blockquote {
+.ed-post > blockquote,
+.ed-post > .ed-references,
+.ed-post > .ed-appendix {
   margin: 0 0 1.5rem;
 }
 
@@ -367,6 +369,46 @@
   letter-spacing: -0.015em;
   margin: 3.25rem 0 1rem;
   scroll-margin-top: 4.75rem;
+}
+
+.ed-post h3 {
+  font-size: 1.08rem;
+  font-weight: 600;
+  margin: 2.25rem 0 0.75rem;
+  scroll-margin-top: 4.75rem;
+}
+
+/* h2/h3 与锚点「#」同行排列：标题换行时锚点仍贴在标题旁 */
+.ed-post h2,
+.ed-post h3 {
+  display: flex;
+  align-items: baseline;
+}
+
+.ed-post .ed-heading-text {
+  min-width: 0;
+}
+
+.ed-heading-link {
+  margin-left: 0.35em;
+  color: var(--ed-faint);
+  font-weight: 400;
+  text-decoration: none;
+  opacity: 0;
+  transition: opacity 0.15s ease;
+}
+
+.ed-post h2:hover .ed-heading-link,
+.ed-post h3:hover .ed-heading-link,
+.ed-heading-link:focus-visible {
+  opacity: 1;
+}
+
+/* 触屏没有 hover，锚点保持半可见 */
+@media (hover: none) {
+  .ed-heading-link {
+    opacity: 0.45;
+  }
 }
 
 .ed-post strong {
@@ -406,10 +448,21 @@
   font-weight: 500;
 }
 
+.ed-toc-title {
+  color: var(--ed-muted);
+  font-weight: 500;
+  margin: 0 0 0.5rem;
+  font-size: 0.88rem;
+}
+
 .ed-toc-nav ul {
   list-style: none;
   margin: 0.6rem 0 0;
   padding: 0;
+}
+
+.ed-toc-nav .ed-toc-title + ul {
+  margin: 0;
 }
 
 .ed-toc-nav li + li {
@@ -418,15 +471,94 @@
 
 .ed-toc-nav a {
   display: block;
-  padding-left: 0.75rem;
+  padding: 0.2em 0 0.2em 0.75rem;
   border-left: 1px solid var(--ed-rule);
   color: var(--ed-muted);
   text-decoration: none;
 }
 
+/* 子目录（h3 层级）：缩进一层 */
+.ed-toc-sub {
+  margin-top: 0.15rem;
+}
+
+.ed-toc-sub a {
+  padding-left: 1.35rem;
+}
+
 .ed-toc-nav a:hover {
   color: var(--ed-text);
   border-left-color: var(--ed-text);
+}
+
+/* --------------------------------------------------------------------------
+   文章双栏布局：左侧粘性目录 + 居中正文（参考 kevin-wu.ca 论文排版）
+   ≥64rem 时页面加宽为「目录 + 间距 + 正文 + 间距」，目录吸附在视口左侧；
+   窄屏回退为正文顶部的折叠目录（.ed-toc details）。
+   -------------------------------------------------------------------------- */
+
+.ed-toc-side {
+  display: none;
+}
+
+@media (min-width: 64rem) {
+  .ed-page.ed-has-toc {
+    --ed-toc-col: 13rem;
+    --ed-toc-gap-col: 3rem;
+    width: min(
+      calc(var(--ed-content) + 2 * (var(--ed-toc-col) + var(--ed-toc-gap-col))),
+      calc(100% - 4rem)
+    );
+  }
+
+  /* 页头与页脚和正文列对齐，而不是和目录列对齐 */
+  .ed-page.ed-has-toc > .ed-header,
+  .ed-page.ed-has-toc > .ed-footer {
+    margin-left: calc(var(--ed-toc-col) + var(--ed-toc-gap-col));
+    max-width: var(--ed-content);
+  }
+
+  .ed-post-layout {
+    display: grid;
+    grid-template-columns:
+      var(--ed-toc-col) var(--ed-toc-gap-col) minmax(0, var(--ed-content)) minmax(0, 1fr);
+  }
+
+  .ed-post-layout > .ed-post-header {
+    grid-area: 1 / 3;
+  }
+
+  .ed-post-layout > .ed-post {
+    grid-area: 2 / 3;
+  }
+
+  /* 宽屏隐藏行内目录 */
+  .ed-post .ed-toc {
+    display: none;
+  }
+
+  /* 左侧目录：第二行起（与正文平齐），吸附在粘性页头下方 */
+  .ed-post-layout > .ed-toc-side {
+    grid-area: 2 / 1;
+    display: block;
+    align-self: start;
+    position: sticky;
+    top: 4.75rem;
+    max-height: calc(100dvh - 5.5rem);
+    overflow-y: auto;
+    font-size: 0.82rem;
+    line-height: 1.65;
+    overscroll-behavior: contain;
+  }
+
+  /* 子目录只在正在阅读该章节时展开，保持列表简短 */
+  .ed-toc-side .ed-toc-sub {
+    display: none;
+  }
+
+  .ed-toc-side li.is-open > .ed-toc-sub {
+    display: block;
+  }
 }
 
 .ed-post-footer {
@@ -443,6 +575,69 @@
 .ed-post-footer a:hover {
   text-decoration: underline;
   text-underline-offset: 0.25em;
+}
+
+/* --------------------------------------------------------------------------
+   参考文献与阅读 / 附录（文章固定末尾区块）
+   -------------------------------------------------------------------------- */
+
+.ed-references,
+.ed-appendix {
+  margin-top: 3.25rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--ed-rule);
+}
+
+.ed-references h2,
+.ed-appendix h2 {
+  margin-top: 0;
+}
+
+.ed-references-list {
+  padding-left: 1.5rem;
+}
+
+.ed-references-list li + li {
+  margin-top: 0.5rem;
+}
+
+.ed-references-list a {
+  font-weight: 500;
+}
+
+.ed-reference-note {
+  color: var(--ed-muted);
+}
+
+.ed-appendix-block + .ed-appendix-block {
+  margin-top: 1rem;
+}
+
+.ed-appendix-block h3 {
+  margin-top: 1.75rem;
+}
+
+.ed-appendix-block > p,
+.ed-appendix-block > ul {
+  margin: 0 0 1.5rem;
+}
+
+.ed-appendix pre,
+.ed-post pre {
+  max-width: 100%;
+  overflow-x: auto;
+  margin: 0 0 1.5rem;
+  padding: 0.85rem 1rem;
+  background: var(--ed-soft);
+  line-height: 1.5;
+  font-size: 0.85em;
+  tab-size: 2;
+}
+
+.ed-appendix code,
+.ed-post code {
+  font-family: ui-monospace, SFMono-Regular, Consolas, "Courier New", monospace;
+  font-size: 0.85em;
 }
 
 @media (max-width: 40rem) {
@@ -738,14 +933,20 @@ html[data-theme="dark"] .ed-to-top {
   .ed-header,
   .ed-socials,
   .ed-toc,
+  .ed-toc-side,
   .ed-to-top,
-  .ed-progress {
-    display: none;
+  .ed-progress,
+  .ed-heading-link {
+    display: none !important;
   }
 
   .ed-page {
     width: 100%;
     padding-top: 0;
+  }
+
+  .ed-post-layout {
+    display: block;
   }
 
   .editorial {
