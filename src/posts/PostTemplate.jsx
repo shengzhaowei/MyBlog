@@ -1,5 +1,7 @@
 import React from 'react';
 import { PostLayout, Heading } from '../PostLayout';
+// 交互图（可选）：import { Compare, DotGrid, LineChart, MetricChart } from '../figures';
+// 用法、色板和「不要编造数据」的约束见 ARTICLE_GUIDE.md 第 6 节。
 
 /* ==========================================================================
    文章模板 —— 新文章从这里复制开始
@@ -78,6 +80,38 @@ export function ArticleSlug() {
       <pre><code>{`// 行内代码贴正文，块状代码进附录或此处
 console.log('hello');`}</code></pre>
       <p>插图使用 <code>&lt;img /&gt;</code>，必须写 alt 与宽高。</p>
+
+      {/*
+        交互图示例。取消注释前，把里面的文字和数字换成这篇文章已经写过的内容。
+        不要为了放一张图去编序列、区间或悬停答案。
+
+        <Compare
+          title="图题"
+          caption="这句话说明两侧文字出自哪里。"
+          pairs={[{
+            id: 'contrast',
+            prompt: '读者可以切换的问题',
+            before: { label: '一侧', body: '文章里已经写过的文字' },
+            after: { label: '另一侧', body: '文章里已经写过的文字' },
+          }]}
+        />
+
+        <MetricChart
+          title="前后两个点"
+          caption="数字的出处。单位不同时分成不同 group。"
+          series={[
+            { key: 'before', name: '之前', tone: 'baseline' },
+            { key: 'after', name: '之后', tone: 'good' },
+          ]}
+          groups={[{
+            label: '指标名',
+            bars: [
+              { key: 'before', value: 1, display: '文章中的写法' },
+              { key: 'after', value: 2, display: '文章中的写法' },
+            ],
+          }]}
+        />
+      */}
 
       {/* ==================== 正文结束：不要手写参考文献/附录，由 PostLayout 自动渲染 ==================== */}
     </PostLayout>
