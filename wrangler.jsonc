@@ -8,5 +8,8 @@
   "assets": {
     "directory": "build",
     "not_found_handling": "single-page-application"
-  }
+  },
+  // 非生产分支会跑 `npx wrangler preview`，没有这个字段会直接失败。
+  // 可以是空对象：assets 和 compatibility 仍留在顶层。
+  "previews": {}
 }
