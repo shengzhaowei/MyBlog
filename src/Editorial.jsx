@@ -16,6 +16,7 @@ const POST_PATH = '/posts/personal-website-as-long-term-project';
 export const POST_MEMORY_PATH = '/posts/context-window-as-cache';
 export const POST_AGENT_EVAL_PATH = '/posts/agent-evaluation-with-fixed-evidence';
 export const POST_SUBAGENTS_PATH = '/posts/claude-code-subagents-code-reviewer';
+export const POST_ERP_AGENT_PATH = '/posts/erp-agent-chatbi';
 
 const SocialLinks = () => (
   <div className="ed-socials" aria-label="社交链接">
@@ -80,6 +81,10 @@ export function EditorialHome() {
           <section className="ed-section ed-reveal" id="posts">
             <h2>文章</h2>
             <ul className="ed-list ed-posts">
+              <li>
+                <Link to={POST_ERP_AGENT_PATH}>给 ERP 接上自然语言查询：一次 ChatBI 落地手记</Link>
+                <time dateTime="2026-11-13">2026.11.13</time>
+              </li>
               <li>
                 <Link to={POST_SUBAGENTS_PATH}>Subagent 不是多开一个聊天框</Link>
                 <time dateTime="2026-11-12">2026.11.12</time>

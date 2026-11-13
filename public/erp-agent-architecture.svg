@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="680" viewBox="0 0 1200 680" font-family="PingFang SC, Hiragino Sans GB, Microsoft YaHei, sans-serif">
+  <defs>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#0f766e"/>
+    </marker>
+  </defs>
+  <rect width="1200" height="680" fill="#fffaf0"/>
+  <text x="600" y="52" text-anchor="middle" font-size="28" font-weight="700" fill="#222222">四层架构：模型永远不直连生产库</text>
+
+  <!-- layer 1 -->
+  <rect x="170" y="90" width="860" height="92" rx="14" fill="#ffffff" stroke="#d8cfc0" stroke-width="1.5"/>
+  <text x="210" y="128" font-size="21" font-weight="700" fill="#0f766e">客户端</text>
+  <text x="210" y="160" font-size="18" fill="#444444">业务人员用自然语言提问，登录一次，随处可用</text>
+  <text x="1000" y="140" text-anchor="end" font-size="17" fill="#888888">桌面端</text>
+
+  <line x1="600" y1="182" x2="600" y2="206" stroke="#0f766e" stroke-width="2.5" marker-end="url(#arr)"/>
+
+  <!-- layer 2 -->
+  <rect x="170" y="206" width="860" height="92" rx="14" fill="#ffffff" stroke="#d8cfc0" stroke-width="1.5"/>
+  <text x="210" y="244" font-size="21" font-weight="700" fill="#0f766e">网关层</text>
+  <text x="210" y="276" font-size="18" fill="#444444">身份鉴权 · 审计日志 · 限流熔断</text>
+  <text x="1000" y="252" text-anchor="end" font-size="17" fill="#888888">谁在问，记下来</text>
+
+  <line x1="600" y1="298" x2="600" y2="322" stroke="#0f766e" stroke-width="2.5" marker-end="url(#arr)"/>
+
+  <!-- layer 3 -->
+  <rect x="170" y="322" width="860" height="92" rx="14" fill="#eef6f3" stroke="#0f766e" stroke-width="2"/>
+  <text x="210" y="360" font-size="21" font-weight="700" fill="#0f766e">理解层</text>
+  <text x="210" y="392" font-size="18" fill="#444444">语义层（表注解与业务口径）· 表路由 · SQL 生成与校验</text>
+  <text x="1000" y="368" text-anchor="end" font-size="17" fill="#0f766e">最难的一层</text>
+
+  <line x1="600" y1="414" x2="600" y2="438" stroke="#0f766e" stroke-width="2.5" marker-end="url(#arr)"/>
+
+  <!-- layer 4 -->
+  <rect x="170" y="438" width="860" height="92" rx="14" fill="#ffffff" stroke="#d8cfc0" stroke-width="1.5"/>
+  <text x="210" y="476" font-size="21" font-weight="700" fill="#0f766e">数据层</text>
+  <text x="210" y="508" font-size="18" fill="#444444">ERP 只读账号 · 行级权限 · 只读查询</text>
+  <text x="1000" y="484" text-anchor="end" font-size="17" fill="#b45309" font-weight="700">只读</text>
+
+  <!-- bottom rule -->
+  <rect x="170" y="566" width="860" height="64" rx="12" fill="#f5efe0"/>
+  <text x="600" y="592" text-anchor="middle" font-size="18" fill="#444444">红线：所有查询只读；权限在数据层强制执行，不写在提示词里</text>
+  <text x="600" y="620" text-anchor="middle" font-size="16" fill="#888888">问题向下走，答案原路向上回</text>
+</svg>
