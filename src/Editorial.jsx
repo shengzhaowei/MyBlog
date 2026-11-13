@@ -82,7 +82,7 @@ export function EditorialHome() {
             <h2>文章</h2>
             <ul className="ed-list ed-posts">
               <li>
-                <Link to={POST_ERP_AGENT_PATH}>给 ERP 接上自然语言查询：一次 ChatBI 落地手记</Link>
+                <Link to={POST_ERP_AGENT_PATH}>给 ERP 接上自然语言查询：一次数据智能体实践手记</Link>
                 <time dateTime="2026-11-13">2026.11.13</time>
               </li>
               <li>
