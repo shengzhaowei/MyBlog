@@ -1,7 +1,8 @@
 import React from 'react';
 import { PostLayout, Heading } from '../PostLayout';
-// 交互图（可选）：import { Compare, DotGrid, LineChart, MetricChart } from '../figures';
-// 用法、色板和「不要编造数据」的约束见 ARTICLE_GUIDE.md 第 6 节。
+// 交互图见 ARTICLE_GUIDE.md 第 6 节。先问这张图是否让一段关系更清楚。
+// 不要为了有气泡或圆点而加图。序列用 LineChart，单位不同的多项对照用 MetricChart。
+// import { LineChart, MetricChart } from '../figures';
 
 /* ==========================================================================
    文章模板 —— 新文章从这里复制开始
@@ -82,34 +83,42 @@ console.log('hello');`}</code></pre>
       <p>插图使用 <code>&lt;img /&gt;</code>，必须写 alt 与宽高。</p>
 
       {/*
-        交互图示例。取消注释前，把里面的文字和数字换成这篇文章已经写过的内容。
-        不要为了放一张图去编序列、区间或悬停答案。
+        只有当正文里的多个点或不同单位放在一起才更清楚时，才取消注释。
+        数字必须已经写在这篇文章里。两个数的前后变化、术语表、改版对照，留在段落里。
 
-        <Compare
+        <LineChart
           title="图题"
-          caption="这句话说明两侧文字出自哪里。"
-          pairs={[{
-            id: 'contrast',
-            prompt: '读者可以切换的问题',
-            before: { label: '一侧', body: '文章里已经写过的文字' },
-            after: { label: '另一侧', body: '文章里已经写过的文字' },
-          }]}
+          caption="出处。若纵轴不从 0 起，在这里说明。"
+          x={[1, 2, 3]}
+          yMin={0}
+          yMax={100}
+          formatY={(value) => `${value}%`}
+          series={[{ key: 's', name: '系列名', values: [1, 2, 3] }]}
         />
 
         <MetricChart
-          title="前后两个点"
-          caption="数字的出处。单位不同时分成不同 group。"
+          title="图题"
+          caption="出处。每一组单位不同，各自按最大值缩放。"
           series={[
-            { key: 'before', name: '之前', tone: 'baseline' },
-            { key: 'after', name: '之后', tone: 'good' },
+            { key: 'a', name: '一侧', tone: 'baseline' },
+            { key: 'b', name: '另一侧', tone: 'good' },
           ]}
-          groups={[{
-            label: '指标名',
-            bars: [
-              { key: 'before', value: 1, display: '文章中的写法' },
-              { key: 'after', value: 2, display: '文章中的写法' },
-            ],
-          }]}
+          groups={[
+            {
+              label: '指标甲',
+              bars: [
+                { key: 'a', value: 1, display: '文章中的写法' },
+                { key: 'b', value: 2, display: '文章中的写法' },
+              ],
+            },
+            {
+              label: '指标乙（另一单位）',
+              bars: [
+                { key: 'a', value: 10, display: '文章中的写法' },
+                { key: 'b', value: 4, display: '文章中的写法' },
+              ],
+            },
+          ]}
         />
       */}
 
