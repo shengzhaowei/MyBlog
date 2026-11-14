@@ -17,6 +17,7 @@ export const POST_MEMORY_PATH = '/posts/context-window-as-cache';
 export const POST_AGENT_EVAL_PATH = '/posts/agent-evaluation-with-fixed-evidence';
 export const POST_SUBAGENTS_PATH = '/posts/claude-code-subagents-code-reviewer';
 export const POST_ERP_AGENT_PATH = '/posts/erp-agent-chatbi';
+export const POST_MINI_AGENT_PATH = '/posts/mini-agent-100-lines';
 
 const SocialLinks = () => (
   <div className="ed-socials" aria-label="社交链接">
@@ -81,6 +82,10 @@ export function EditorialHome() {
           <section className="ed-section ed-reveal" id="posts">
             <h2>文章</h2>
             <ul className="ed-list ed-posts">
+              <li>
+                <Link to={POST_MINI_AGENT_PATH}>100 行代码写一个 Agent：手写 ReAct 循环</Link>
+                <time dateTime="2026-11-14">2026.11.14</time>
+              </li>
               <li>
                 <Link to={POST_ERP_AGENT_PATH}>给 ERP 接上自然语言查询：一次数据智能体实践手记</Link>
                 <time dateTime="2026-11-13">2026.11.13</time>
