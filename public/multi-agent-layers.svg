@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="520" viewBox="0 0 1200 520" font-family="PingFang SC, Hiragino Sans GB, Microsoft YaHei, sans-serif">
+  <defs>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#0f766e"/></marker>
+  </defs>
+  <rect width="1200" height="520" fill="#fffaf0"/>
+  <text x="600" y="48" text-anchor="middle" font-size="26" font-weight="700" fill="#222222">从手撕 150 行到生产框架：多出来的四层</text>
+  <text x="600" y="78" text-anchor="middle" font-size="15" fill="#666666">每一层都只解决一个问题，缺哪层就只补哪层</text>
+
+  <rect x="80" y="110" width="1040" height="70" rx="14" fill="#0f766e"/>
+  <text x="140" y="140" font-size="18" font-weight="700" fill="#ffffff">第 1 层 · 单 Agent 循环</text>
+  <text x="140" y="168" font-size="14" fill="#d1fae5">ReAct：调模型 → 执行工具 → 结果回填 → 再调模型。100 行那篇的全部。</text>
+
+  <rect x="80" y="195" width="1040" height="70" rx="14" fill="#ffffff" stroke="#0f766e" stroke-width="2"/>
+  <text x="140" y="225" font-size="18" font-weight="700" fill="#0f766e">第 2 层 · 派生：delegate_task 就是一个工具</text>
+  <text x="140" y="253" font-size="14" fill="#444444">协调员调它派生子 Agent；子 Agent 全新对话、只看到任务。手撕 150 行到此为止。</text>
+
+  <rect x="80" y="280" width="1040" height="70" rx="14" fill="#ffffff" stroke="#d8cfc0" stroke-width="1.5"/>
+  <text x="140" y="310" font-size="18" font-weight="700" fill="#0f766e">第 3 层 · 编排：谁决定下一步</text>
+  <text x="140" y="338" font-size="14" fill="#444444">图（LangGraph）、角色与任务（CrewAI）、群聊（AutoGen）、SOP（MetaGPT）、移交（OpenAI Agents SDK）、树（Google ADK）。</text>
+
+  <rect x="80" y="365" width="1040" height="70" rx="14" fill="#ffffff" stroke="#d8cfc0" stroke-width="1.5"/>
+  <text x="140" y="395" font-size="18" font-weight="700" fill="#0f766e">第 4 层 · 工程化：持久化、观测、护栏</text>
+  <text x="140" y="423" font-size="14" fill="#444444">检查点与断点续跑、每一步的追踪与审计、权限与审批、超时与重试上限。框架真正值钱的地方大多在这里。</text>
+
+  <line x1="600" y1="180" x2="600" y2="195" stroke="#0f766e" stroke-width="2.5" marker-end="url(#arr)"/>
+  <line x1="600" y1="265" x2="600" y2="280" stroke="#0f766e" stroke-width="2.5" marker-end="url(#arr)"/>
+  <line x1="600" y1="350" x2="600" y2="365" stroke="#0f766e" stroke-width="2.5" marker-end="url(#arr)"/>
+
+  <text x="600" y="480" text-anchor="middle" font-size="15" fill="#444444">判断标准：只做「拆任务 → 并行做 → 汇总」，第 2 层就够了；要分支回退、断点续跑、审计每一步，才需要第 3、4 层。</text>
+</svg>

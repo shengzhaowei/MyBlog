@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="540" viewBox="0 0 1200 540" font-family="PingFang SC, Hiragino Sans GB, Microsoft YaHei, sans-serif">
+  <defs>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#0f766e"/></marker>
+    <marker id="arrAmber" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#b45309"/></marker>
+  </defs>
+  <rect width="1200" height="540" fill="#fffaf0"/>
+  <text x="600" y="48" text-anchor="middle" font-size="26" font-weight="700" fill="#222222">多智能体真正买的东西：各自独立的上下文窗口</text>
+  <text x="600" y="78" text-anchor="middle" font-size="15" fill="#666666">子 Agent 看不到父 Agent 的历史，父 Agent 只拿到一句话摘要</text>
+
+  <!-- coordinator -->
+  <rect x="60" y="110" width="300" height="180" rx="14" fill="#0f766e"/>
+  <text x="210" y="145" text-anchor="middle" font-size="19" font-weight="700" fill="#ffffff">协调员的窗口</text>
+  <text x="210" y="175" text-anchor="middle" font-size="14" fill="#d1fae5">任务 + 拆分计划</text>
+  <text x="210" y="200" text-anchor="middle" font-size="14" fill="#d1fae5">调研摘要：三家店销量…</text>
+  <text x="210" y="225" text-anchor="middle" font-size="14" fill="#d1fae5">分析摘要：总销量 425</text>
+  <text x="210" y="250" text-anchor="middle" font-size="14" fill="#d1fae5">写手摘要：已写入 brief.md</text>
+
+  <!-- workers -->
+  <rect x="420" y="110" width="220" height="180" rx="14" fill="#ffffff" stroke="#0f766e" stroke-width="2"/>
+  <text x="530" y="145" text-anchor="middle" font-size="18" font-weight="700" fill="#0f766e">调研员的窗口</text>
+  <text x="530" y="175" text-anchor="middle" font-size="14" fill="#444444">只看到：查三家店销量</text>
+  <text x="530" y="200" text-anchor="middle" font-size="14" fill="#444444">lookup 的 3 条结果</text>
+  <text x="530" y="225" text-anchor="middle" font-size="14" fill="#999999">看不到协调员的计划</text>
+  <text x="530" y="250" text-anchor="middle" font-size="14" fill="#999999">看不到分析员在算什么</text>
+
+  <rect x="680" y="110" width="220" height="180" rx="14" fill="#ffffff" stroke="#0f766e" stroke-width="2"/>
+  <text x="790" y="145" text-anchor="middle" font-size="18" font-weight="700" fill="#0f766e">分析员的窗口</text>
+  <text x="790" y="175" text-anchor="middle" font-size="14" fill="#444444">只看到：算 120+95+210</text>
+  <text x="790" y="200" text-anchor="middle" font-size="14" fill="#444444">calc 的结果：425</text>
+  <text x="790" y="225" text-anchor="middle" font-size="14" fill="#999999">看不到调研员的备注</text>
+  <text x="790" y="250" text-anchor="middle" font-size="14" fill="#999999">看不到写手的简报</text>
+
+  <rect x="940" y="110" width="200" height="180" rx="14" fill="#ffffff" stroke="#0f766e" stroke-width="2"/>
+  <text x="1040" y="145" text-anchor="middle" font-size="18" font-weight="700" fill="#0f766e">写手的窗口</text>
+  <text x="1040" y="175" text-anchor="middle" font-size="14" fill="#444444">只看到：两份摘要</text>
+  <text x="1040" y="200" text-anchor="middle" font-size="14" fill="#444444">write_file 一次</text>
+  <text x="1040" y="225" text-anchor="middle" font-size="14" fill="#999999">看不到查的过程</text>
+  <text x="1040" y="250" text-anchor="middle" font-size="14" fill="#999999">看不到算的过程</text>
+
+  <line x1="360" y1="180" x2="420" y2="180" stroke="#0f766e" stroke-width="2.5" marker-end="url(#arr)"/>
+  <line x1="360" y1="220" x2="680" y2="180" stroke="#0f766e" stroke-width="2" stroke-dasharray="6 5" marker-end="url(#arr)"/>
+  <line x1="360" y1="250" x2="940" y2="190" stroke="#0f766e" stroke-width="2" stroke-dasharray="6 5" marker-end="url(#arr)"/>
+  <text x="390" y="168" font-size="13" fill="#0f766e">派任务</text>
+
+  <line x1="530" y1="290" x2="300" y2="290" stroke="#b45309" stroke-width="2.5" stroke-dasharray="8 6" marker-end="url(#arrAmber)"/>
+  <text x="415" y="275" text-anchor="middle" font-size="14" font-weight="700" fill="#b45309">只交回摘要，不交回全过程</text>
+
+  <rect x="60" y="330" width="1080" height="160" rx="14" fill="#ffffff" stroke="#d8cfc0" stroke-width="1.5"/>
+  <text x="600" y="365" text-anchor="middle" font-size="17" font-weight="700" fill="#222222">为什么这就是收益，也是代价</text>
+  <text x="600" y="395" text-anchor="middle" font-size="15" fill="#444444">收益：三个工人并行探索，各自的上下文不会互相污染；协调员的窗口始终很小，只装摘要。</text>
+  <text x="600" y="423" text-anchor="middle" font-size="15" fill="#444444">代价：摘要会丢细节。任务描述写得越具体、要求返回的格式越结构化，丢得越少。</text>
+  <text x="600" y="451" text-anchor="middle" font-size="15" fill="#444444">Anthropic 的多智能体研究系统也走这条路：子 Agent 并行探索后，只把最关键的信息压缩后交回。</text>
+  <text x="600" y="479" text-anchor="middle" font-size="14" fill="#666666">代价的另一面是 token：Anthropic 报告其多智能体系统约用单轮对话 15 倍的 token，单 Agent 约 4 倍。</text>
+</svg>

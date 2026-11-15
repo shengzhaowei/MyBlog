@@ -1,0 +1,65 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="640" viewBox="0 0 1200 640" font-family="PingFang SC, Hiragino Sans GB, Microsoft YaHei, sans-serif">
+  <defs>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#0f766e"/></marker>
+  </defs>
+  <rect width="1200" height="640" fill="#fffaf0"/>
+  <text x="600" y="48" text-anchor="middle" font-size="26" font-weight="700" fill="#222222">五种组织方式：同一个任务，五种分法</text>
+  <text x="600" y="78" text-anchor="middle" font-size="15" fill="#666666">谁拆任务、谁决定下一步，是区分它们唯一的标准</text>
+
+  <!-- 1 orchestrator -->
+  <rect x="40" y="100" width="340" height="150" rx="14" fill="#ffffff" stroke="#0f766e" stroke-width="2"/>
+  <text x="210" y="132" text-anchor="middle" font-size="18" font-weight="700" fill="#0f766e">① 协调员-工人</text>
+  <text x="210" y="158" text-anchor="middle" font-size="14" fill="#444444">协调员现拆现派，工人并行做</text>
+  <circle cx="210" cy="190" r="16" fill="#0f766e"/><text x="210" y="195" text-anchor="middle" font-size="13" fill="#fff">总</text>
+  <circle cx="130" cy="228" r="13" fill="#eef6f3" stroke="#0f766e"/><text x="130" y="232" text-anchor="middle" font-size="12" fill="#0f766e">查</text>
+  <circle cx="210" cy="228" r="13" fill="#eef6f3" stroke="#0f766e"/><text x="210" y="232" text-anchor="middle" font-size="12" fill="#0f766e">算</text>
+  <circle cx="290" cy="228" r="13" fill="#eef6f3" stroke="#0f766e"/><text x="290" y="232" text-anchor="middle" font-size="12" fill="#0f766e">写</text>
+  <line x1="200" y1="205" x2="140" y2="216" stroke="#0f766e" stroke-width="2" marker-end="url(#arr)"/>
+  <line x1="210" y1="206" x2="210" y2="215" stroke="#0f766e" stroke-width="2" marker-end="url(#arr)"/>
+  <line x1="220" y1="205" x2="280" y2="216" stroke="#0f766e" stroke-width="2" marker-end="url(#arr)"/>
+
+  <!-- 2 pipeline -->
+  <rect x="420" y="100" width="340" height="150" rx="14" fill="#ffffff" stroke="#d8cfc0" stroke-width="1.5"/>
+  <text x="590" y="132" text-anchor="middle" font-size="18" font-weight="700" fill="#0f766e">② 流水线</text>
+  <text x="590" y="158" text-anchor="middle" font-size="14" fill="#444444">顺序写死：上一步输出是下一步输入</text>
+  <circle cx="480" cy="205" r="16" fill="#eef6f3" stroke="#0f766e"/><text x="480" y="210" text-anchor="middle" font-size="12" fill="#0f766e">查</text>
+  <circle cx="590" cy="205" r="16" fill="#eef6f3" stroke="#0f766e"/><text x="590" y="210" text-anchor="middle" font-size="12" fill="#0f766e">算</text>
+  <circle cx="700" cy="205" r="16" fill="#eef6f3" stroke="#0f766e"/><text x="700" y="210" text-anchor="middle" font-size="12" fill="#0f766e">写</text>
+  <line x1="496" y1="205" x2="574" y2="205" stroke="#0f766e" stroke-width="2" marker-end="url(#arr)"/>
+  <line x1="606" y1="205" x2="684" y2="205" stroke="#0f766e" stroke-width="2" marker-end="url(#arr)"/>
+
+  <!-- 3 parallel -->
+  <rect x="800" y="100" width="340" height="150" rx="14" fill="#ffffff" stroke="#d8cfc0" stroke-width="1.5"/>
+  <text x="970" y="132" text-anchor="middle" font-size="18" font-weight="700" fill="#0f766e">③ 并行扇出</text>
+  <text x="970" y="158" text-anchor="middle" font-size="14" fill="#444444">子任务事先定好，同时跑再汇总</text>
+  <circle cx="890" cy="205" r="16" fill="#eef6f3" stroke="#0f766e"/><text x="890" y="210" text-anchor="middle" font-size="12" fill="#0f766e">A</text>
+  <circle cx="970" cy="205" r="16" fill="#eef6f3" stroke="#0f766e"/><text x="970" y="210" text-anchor="middle" font-size="12" fill="#0f766e">B</text>
+  <circle cx="1050" cy="205" r="16" fill="#eef6f3" stroke="#0f766e"/><text x="1050" y="210" text-anchor="middle" font-size="12" fill="#0f766e">C</text>
+  <text x="970" y="240" text-anchor="middle" font-size="13" fill="#b45309">↓ 最后一步汇总</text>
+
+  <!-- 4 swarm -->
+  <rect x="40" y="280" width="540" height="160" rx="14" fill="#ffffff" stroke="#d8cfc0" stroke-width="1.5"/>
+  <text x="310" y="312" text-anchor="middle" font-size="18" font-weight="700" fill="#0f766e">④ 群体移交（Swarm / Handoff）</text>
+  <text x="310" y="338" text-anchor="middle" font-size="14" fill="#444444">没有协调员，谁拿到活谁决定交给谁</text>
+  <circle cx="150" cy="390" r="18" fill="#eef6f3" stroke="#0f766e"/><text x="150" y="395" text-anchor="middle" font-size="12" fill="#0f766e">客服</text>
+  <circle cx="310" cy="390" r="18" fill="#eef6f3" stroke="#0f766e"/><text x="310" y="395" text-anchor="middle" font-size="12" fill="#0f766e">账单</text>
+  <circle cx="470" cy="390" r="18" fill="#eef6f3" stroke="#0f766e"/><text x="470" y="395" text-anchor="middle" font-size="12" fill="#0f766e">退款</text>
+  <line x1="168" y1="390" x2="292" y2="390" stroke="#0f766e" stroke-width="2" marker-end="url(#arr)"/>
+  <line x1="328" y1="390" x2="452" y2="390" stroke="#0f766e" stroke-width="2" marker-end="url(#arr)"/>
+  <text x="310" y="428" text-anchor="middle" font-size="13" fill="#666666">transfer_to_billing → transfer_to_refunds</text>
+
+  <!-- 5 debate -->
+  <rect x="620" y="280" width="520" height="160" rx="14" fill="#ffffff" stroke="#d8cfc0" stroke-width="1.5"/>
+  <text x="880" y="312" text-anchor="middle" font-size="18" font-weight="700" fill="#0f766e">⑤ 辩论与评审</text>
+  <text x="880" y="338" text-anchor="middle" font-size="14" fill="#444444">各自独立出方案，互相挑错，再裁决</text>
+  <circle cx="740" cy="390" r="18" fill="#eef6f3" stroke="#0f766e"/><text x="740" y="395" text-anchor="middle" font-size="12" fill="#0f766e">方案A</text>
+  <circle cx="880" cy="390" r="18" fill="#eef6f3" stroke="#0f766e"/><text x="880" y="395" text-anchor="middle" font-size="12" fill="#0f766e">方案B</text>
+  <circle cx="1020" cy="390" r="18" fill="#fff7ed" stroke="#b45309"/><text x="1020" y="395" text-anchor="middle" font-size="12" fill="#b45309">评审</text>
+  <line x1="758" y1="390" x2="862" y2="390" stroke="#0f766e" stroke-width="2"/>
+  <line x1="898" y1="390" x2="1002" y2="390" stroke="#b45309" stroke-width="2" marker-end="url(#arr)"/>
+
+  <rect x="40" y="470" width="1100" height="120" rx="14" fill="#ffffff" stroke="#d8cfc0" stroke-width="1.5"/>
+  <text x="600" y="505" text-anchor="middle" font-size="16" font-weight="700" fill="#222222">读源码时只问一句：下一步是谁决定的？</text>
+  <text x="600" y="535" text-anchor="middle" font-size="15" fill="#444444">写死在代码里 → 流水线 / 并行扇出；协调员模型现拆 → 协调员-工人；Agent 自己移交 → 群体移交；各自独立再裁决 → 辩论。</text>
+  <text x="600" y="563" text-anchor="middle" font-size="15" fill="#444444">这五种之外再起新名字，大多只是其中一种换了叫法。</text>
+</svg>
