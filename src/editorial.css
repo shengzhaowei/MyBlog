@@ -110,10 +110,9 @@
 }
 
 .ed-header.is-scrolled {
+  /* 必须是实底色：之前是 84% 半透明加模糊，滚动时正文从页眉后面透出来，
+     站名「盛兆威」会和正文段落叠在一起（2026-11-17 线上截图与浏览器核查都确认了）。 */
   background: var(--ed-bg);
-  background: color-mix(in srgb, var(--ed-bg) 84%, transparent);
-  -webkit-backdrop-filter: blur(12px);
-  backdrop-filter: blur(12px);
   box-shadow: 0 1px 0 var(--ed-rule);
 }
 
