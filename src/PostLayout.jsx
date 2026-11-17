@@ -338,6 +338,13 @@ export const AppendixSection = ({ sections }) => (
    PostLayout 主组件
    -------------------------------------------------------------------------- */
 
+/* --------------------------------------------------------------------------
+   图片灯箱：正文里的图都是裸 <img>，点开没反应。
+   这里在 article 上做事件委托，点任何一张正文图都全屏放大，
+   点空白处、按 Esc 或点 × 关闭。所有用 PostLayout 的文章都生效，
+   不用每篇文章单独包一层 <a>。
+   -------------------------------------------------------------------------- */
+
 export function PostLayout({
   title,
   dek,
@@ -357,6 +364,48 @@ export function PostLayout({
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
+
+  const articleRef = useRef(null);
+  const [lightbox, setLightbox] = useState(null);
+
+  useEffect(() => {
+    const article = articleRef.current;
+    if (!article) return undefined;
+    article.querySelectorAll('img').forEach((img) => {
+      img.style.cursor = 'zoom-in';
+      if (!img.getAttribute('title')) img.setAttribute('title', '点击放大');
+    });
+    const openFrom = (img) => {
+      if (!img || img.closest('a, button')) return;
+      setLightbox({ src: img.currentSrc || img.src, alt: img.alt || '' });
+    };
+    const onClick = (event) => openFrom(event.target.closest('img'));
+    const onKeyDown = (event) => {
+      if (event.key === 'Enter' && event.target && event.target.closest) {
+        openFrom(event.target.closest('img'));
+      }
+    };
+    article.addEventListener('click', onClick);
+    article.addEventListener('keydown', onKeyDown);
+    return () => {
+      article.removeEventListener('click', onClick);
+      article.removeEventListener('keydown', onKeyDown);
+    };
+  }, [children]);
+
+  useEffect(() => {
+    if (!lightbox) return undefined;
+    const onKey = (event) => {
+      if (event.key === 'Escape') setLightbox(null);
+    };
+    document.addEventListener('keydown', onKey);
+    const prevOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    return () => {
+      document.removeEventListener('keydown', onKey);
+      document.body.style.overflow = prevOverflow;
+    };
+  }, [lightbox]);
 
   // 目录 = 正文章节 + 固定追加的「参考文献与阅读」与「附录」
   const tocItems = useMemo(() => {
@@ -407,7 +456,7 @@ export function PostLayout({
             </nav>
           </aside>
 
-          <article className="ed-post" id="ed-article">
+          <article className="ed-post" id="ed-article" ref={articleRef}>
             {/* 窄屏行内折叠目录，宽屏隐藏 */}
             <details className="ed-toc">
               <summary>本文目录</summary>
@@ -435,6 +484,32 @@ export function PostLayout({
         <Footer note="© 2026 盛兆威" href="/" label="返回首页 →" />
       </div>
       <BackToTop />
+      {lightbox && (
+        <div
+          className="ed-lightbox"
+          role="dialog"
+          aria-modal="true"
+          aria-label={lightbox.alt || '放大查看图片'}
+          onClick={() => setLightbox(null)}
+        >
+          <button
+            type="button"
+            className="ed-lightbox-close"
+            onClick={() => setLightbox(null)}
+            aria-label="关闭大图"
+          >
+            ×
+          </button>
+          {/* eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-noninteractive-element-interactions */}
+          <img
+            className="ed-lightbox-img"
+            src={lightbox.src}
+            alt={lightbox.alt}
+            onClick={(event) => event.stopPropagation()}
+          />
+          {lightbox.alt && <p className="ed-lightbox-caption">{lightbox.alt}</p>}
+        </div>
+      )}
     </div>
   );
 }
