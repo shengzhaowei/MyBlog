@@ -501,6 +501,116 @@
   display: none;
 }
 
+/* 章节眉：dg-ai-notes 电子书每章顶部的 “上篇 · 跑起来 — P01” 式小字眉 */
+.ed-eyebrow {
+  margin: 2.5rem 0 0.75rem;
+  font-size: 0.8rem;
+  color: var(--ed-muted);
+  letter-spacing: 0.06em;
+}
+
+.ed-eyebrow + h2,
+.ed-eyebrow + h3 {
+  margin-top: 0;
+}
+
+/* Agent笔记栏：默认隐藏，只在传了 notes 的文章、宽屏下出现 */
+.ed-notes-side {
+  display: none;
+}
+
+.ed-notes-mobile {
+  margin: 0 0 2.25rem;
+  padding: 0.85rem 1rem;
+  background: var(--ed-soft);
+  font-size: 0.82rem;
+  line-height: 1.65;
+}
+
+.ed-notes-mobile summary {
+  cursor: pointer;
+  color: var(--ed-muted);
+  font-weight: 500;
+}
+
+.ed-notes-toggle {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  width: 100%;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--ed-muted);
+  font: inherit;
+  font-weight: 500;
+  text-align: left;
+  cursor: pointer;
+}
+
+.ed-notes-toggle-bar {
+  width: 2px;
+  height: 0.9em;
+  background: var(--ed-accent);
+  flex: 0 0 auto;
+}
+
+.ed-notes-toggle-label {
+  flex: 1 1 auto;
+}
+
+.ed-notes-caret {
+  flex: 0 0 auto;
+  transition: transform 0.15s ease;
+}
+
+.ed-notes-side.is-collapsed .ed-notes-caret {
+  transform: rotate(-90deg);
+}
+
+.ed-notes-side.is-collapsed .ed-notes-hint,
+.ed-notes-side.is-collapsed .ed-notes-list {
+  display: none;
+}
+
+.ed-notes-hint {
+  margin: 0.4rem 0 0;
+  color: var(--ed-faint);
+  font-size: 0.78rem;
+}
+
+.ed-notes-list {
+  list-style: none;
+  margin: 0.6rem 0 0;
+  padding: 0;
+}
+
+.ed-notes-list li {
+  margin-top: 0.15rem;
+  padding: 0.45rem 0 0.45rem 0.75rem;
+  border-left: 1px solid var(--ed-rule);
+}
+
+.ed-notes-list li.is-active {
+  border-left-color: var(--ed-accent);
+}
+
+.ed-notes-list a {
+  display: block;
+  color: var(--ed-muted);
+  font-weight: 500;
+  text-decoration: none;
+}
+
+.ed-notes-list li.is-active a {
+  color: var(--ed-text);
+}
+
+.ed-notes-list p {
+  margin: 0.15rem 0 0;
+  color: var(--ed-muted);
+}
+
 @media (min-width: 64rem) {
   .ed-page.ed-has-toc {
     --ed-toc-col: 13rem;
@@ -558,6 +668,29 @@
 
   .ed-toc-side li.is-open > .ed-toc-sub {
     display: block;
+  }
+
+}
+
+/* 右侧 Agent笔记栏：只在 ≥80rem（1280px）出现。64–80rem 之间页面只有
+   74rem 宽，第四列 1fr 只剩不到 3rem，笔记会被挤成细条，所以这个区间
+   仍用窄屏的折叠块。dg-ai-notes 的沉浸模式也是只在 ≥1280px 可用。 */
+@media (min-width: 80rem) {
+  .ed-post-layout > .ed-notes-side {
+    grid-area: 2 / 4;
+    display: block;
+    align-self: start;
+    position: sticky;
+    top: 4.75rem;
+    max-height: calc(100dvh - 5.5rem);
+    overflow-y: auto;
+    font-size: 0.82rem;
+    line-height: 1.65;
+    overscroll-behavior: contain;
+  }
+
+  .ed-notes-mobile {
+    display: none;
   }
 }
 
@@ -934,6 +1067,8 @@ html[data-theme="dark"] .ed-to-top {
   .ed-socials,
   .ed-toc,
   .ed-toc-side,
+  .ed-notes-side,
+  .ed-notes-mobile,
   .ed-to-top,
   .ed-progress,
   .ed-heading-link {

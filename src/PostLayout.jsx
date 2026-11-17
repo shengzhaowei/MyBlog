@@ -297,6 +297,77 @@ const TocList = ({ items, active }) => (
 );
 
 /* --------------------------------------------------------------------------
+   Agent笔记栏：只在传了 notes 的文章出现（目前仅 Claude Code 电子书）。
+   模仿 dg-ai-notes 电子书的右侧大纲（RightOutline）：宽屏 sticky 在正文
+   右侧第 4 列，随滚动高亮当前章节，可收起，收起状态记到 localStorage；
+   窄屏退化为正文顶部的折叠 <details>。内容只记结论与出处，不复述正文，
+   与左侧目录（章节导航）分工不同，所以不复用 TocList。
+   -------------------------------------------------------------------------- */
+
+const NotesList = ({ notes, active }) => (
+  <ul className="ed-notes-list">
+    {notes.map((note) => {
+      const isActive = active === note.id;
+      return (
+        <li key={note.id} className={isActive ? 'is-active' : undefined}>
+          <a href={`#${note.id}`} aria-current={isActive ? 'location' : undefined}>
+            {note.title}
+          </a>
+          <p>{note.text}</p>
+        </li>
+      );
+    })}
+  </ul>
+);
+
+const AgentNotesSide = ({ notes, active }) => {
+  const [collapsed, setCollapsed] = useState(() => {
+    try {
+      return localStorage.getItem('ed-notes-collapsed') === 'true';
+    } catch (error) {
+      return false;
+    }
+  });
+
+  const toggle = () => {
+    setCollapsed((prev) => {
+      const next = !prev;
+      try {
+        localStorage.setItem('ed-notes-collapsed', String(next));
+      } catch (error) {
+        /* 隐私模式下无法存储时忽略 */
+      }
+      return next;
+    });
+  };
+
+  return (
+    <aside
+      className={`ed-notes-side${collapsed ? ' is-collapsed' : ''}`}
+      aria-label="Agent笔记"
+    >
+      <button
+        type="button"
+        className="ed-notes-toggle"
+        onClick={toggle}
+        aria-expanded={!collapsed}
+        aria-controls="ed-notes-list"
+      >
+        <span className="ed-notes-toggle-bar" aria-hidden="true" />
+        <span className="ed-notes-toggle-label">Agent笔记</span>
+        <svg className="ed-notes-caret" width="10" height="10" viewBox="0 0 10 10" aria-hidden="true">
+          <path d="M2.5 3.5L5 6.5L7.5 3.5" stroke="currentColor" fill="none" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
+        </svg>
+      </button>
+      <p className="ed-notes-hint">只记结论与出处，不复述正文。</p>
+      <nav id="ed-notes-list" aria-label="Agent笔记列表">
+        <NotesList notes={notes} active={active} />
+      </nav>
+    </aside>
+  );
+};
+
+/* --------------------------------------------------------------------------
    固定末尾区块：参考文献与阅读 / 附录
    -------------------------------------------------------------------------- */
 
@@ -356,6 +427,7 @@ export function PostLayout({
   toc = [],
   references,
   appendixSections = [],
+  notes,
   current = 'posts',
   children,
 }) {
@@ -456,6 +528,11 @@ export function PostLayout({
             </nav>
           </aside>
 
+          {/* 宽屏右侧 Agent笔记栏（sticky），只在传了 notes 的文章出现 */}
+          {notes && notes.length > 0 && (
+            <AgentNotesSide notes={notes} active={activeSection} />
+          )}
+
           <article className="ed-post" id="ed-article" ref={articleRef}>
             {/* 窄屏行内折叠目录，宽屏隐藏 */}
             <details className="ed-toc">
@@ -464,6 +541,14 @@ export function PostLayout({
                 <TocList items={tocItems} active={activeSection} />
               </nav>
             </details>
+
+            {/* 窄屏 Agent笔记折叠块，宽屏隐藏 */}
+            {notes && notes.length > 0 && (
+              <details className="ed-notes-mobile">
+                <summary>Agent笔记</summary>
+                <NotesList notes={notes} active={activeSection} />
+              </details>
+            )}
 
             {children}
 
