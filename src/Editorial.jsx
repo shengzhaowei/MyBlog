@@ -19,6 +19,7 @@ export const POST_SUBAGENTS_PATH = '/posts/claude-code-subagents-code-reviewer';
 export const POST_ERP_AGENT_PATH = '/posts/erp-agent-chatbi';
 export const POST_MINI_AGENT_PATH = '/posts/mini-agent-100-lines';
 export const POST_MULTI_AGENT_PATH = '/posts/multi-agent-guide';
+export const POST_AGENT_MEMORY_PATH = '/posts/agent-memory-implementation';
 
 const SocialLinks = () => (
   <div className="ed-socials" aria-label="社交链接">
@@ -83,6 +84,10 @@ export function EditorialHome() {
           <section className="ed-section ed-reveal" id="posts">
             <h2>文章</h2>
             <ul className="ed-list ed-posts">
+              <li>
+                <Link to={POST_AGENT_MEMORY_PATH}>Agent 是怎么记住你的：记忆系统的实现手记</Link>
+                <time dateTime="2026-11-17">2026.11.17</time>
+              </li>
               <li>
                 <Link to={POST_MULTI_AGENT_PATH}>Multi-Agent 不是多开几个 Agent：从手撕 150 行到六个开源项目的拆解</Link>
                 <time dateTime="2026-11-15">2026.11.15</time>

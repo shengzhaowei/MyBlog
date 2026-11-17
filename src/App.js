@@ -8,6 +8,7 @@ import { PostClaudeSubagents } from './posts/PostClaudeSubagents';
 import { PostErpAgent } from './posts/PostErpAgent';
 import { PostMiniAgent } from './posts/PostMiniAgent';
 import { PostMultiAgent } from './posts/PostMultiAgent';
+import { PostAgentMemory } from './posts/PostAgentMemory';
 import SpotifyRec from './Projects/SpotifyRec';
 import Projecttwo from './Projects/MangaProjects';
 import Interests from './More/interests';
@@ -25,6 +26,7 @@ function App() {
         <Route path="/posts/erp-agent-chatbi" element={<PostErpAgent />} />
         <Route path="/posts/mini-agent-100-lines" element={<PostMiniAgent />} />
         <Route path="/posts/multi-agent-guide" element={<PostMultiAgent />} />
+        <Route path="/posts/agent-memory-implementation" element={<PostAgentMemory />} />
         <Route path="/spotifyrecs" element={<SpotifyRec />} />
         <Route path="/mangaproject" element={<Projecttwo />} />
         <Route path="/interests" element={<Interests />} />
