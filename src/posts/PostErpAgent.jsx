@@ -93,10 +93,10 @@ export function PostErpAgent() {
       <p>我们给 ERP 接了自然语言查询。业务人员用中文问，系统查 ERP 回答，全程只读，一行生产数据没改过。数字错了是经营误判，权限错了是数据泄露，写错一笔是生产事故，所以项目第一天就定了三条边界，只读、可审计、权限在数据层。</p>
 
       <img
-        src={`${process.env.PUBLIC_URL}/erp-agent-hero.png`}
-        alt="业务人员向 AI 助手提问，屏幕上是 ERP 仪表盘与生产线的插画"
-        width="1920"
-        height="1280"
+        src={`${process.env.PUBLIC_URL}/erp-agent-chatbi-illustrations/05-waiting-number.png`}
+        alt="小黑坐在取号窗口前捏着问题纸条等叫号"
+        width="2048"
+        height="1152"
         decoding="async"
       />
 
@@ -130,10 +130,10 @@ export function PostErpAgent() {
       <p>整个系统分四层，客户端、网关层、理解层、数据层。问题向下走，答案原路向上回。</p>
 
       <img
-        src={`${process.env.PUBLIC_URL}/erp-agent-architecture.svg`}
-        alt="四层架构图，客户端、网关层、理解层、数据层，模型不直连生产库"
-        width="1200"
-        height="680"
+        src={`${process.env.PUBLIC_URL}/erp-agent-chatbi-illustrations/03-architecture-tower.png`}
+        alt="小黑守着四层小楼，客户端、网关层、理解层、数据层，最底层上了锁"
+        width="2048"
+        height="1152"
         decoding="async"
       />
 
@@ -145,10 +145,10 @@ export function PostErpAgent() {
       <p>模型写 SQL 现在已经不错了。卡住的地方在语义层。模型不知道你们公司的销量是什么意思，库存该看哪张表，某车间对应哪个编码，这些知识不在模型里，在业务里。</p>
 
       <img
-        src={`${process.env.PUBLIC_URL}/erp-agent-semantic.svg`}
-        alt="语义层流程图，中文问题、表路由、口径与 SQL、答案与依据"
-        width="1200"
-        height="600"
+        src={`${process.env.PUBLIC_URL}/erp-agent-chatbi-illustrations/01-caliber-press.png`}
+        alt="小黑摇手摇压面机，问题纸条从上面进，数字票从下面出"
+        width="2048"
+        height="1152"
         decoding="async"
       />
 
@@ -166,14 +166,22 @@ export function PostErpAgent() {
       <p>这里有个容易踩的坑。会话级的权限状态会跟着数据库连接走。连接池把一条带权限的连接复用给下一个人，下一个人的查询可能带着上一个人的权限。做法是关掉连接池，或者每次新建连接，权限状态绝不能跨会话复用。</p>
       <p>桌面端登录走本地登录，企业单点登录已在改版中移除。调用查询服务的凭证仍有有效期，过期要重新登录。桌面端存凭证要用系统级的安全存储，不要把密钥写进配置文件。</p>
 
+      <img
+        src={`${process.env.PUBLIC_URL}/erp-agent-chatbi-illustrations/02-permission-gate.png`}
+        alt="小黑抱着大红挂锁守在生产库保险库前的铁栅门外"
+        width="2048"
+        height="1152"
+        decoding="async"
+      />
+
       <Heading id="evaluation">没有评测就没有改进</Heading>
       <p>凭感觉调提示词，改好改坏是不知道的。评测的做法是建一个黄金题库，每道题有自然语言问题、标准 SQL 和标准答案。跑一遍 Agent，逐题打分。</p>
 
       <img
-        src={`${process.env.PUBLIC_URL}/erp-agent-eval-loop.svg`}
-        alt="评测闭环图，黄金题库、运行评测、比对结果、失败分类、修复、回归"
-        width="1200"
-        height="540"
+        src={`${process.env.PUBLIC_URL}/erp-agent-chatbi-illustrations/04-eval-sort.png`}
+        alt="小黑把考卷投进四个信箱，路由错、口径错、权限错、编造答案"
+        width="2048"
+        height="1152"
         decoding="async"
       />
 

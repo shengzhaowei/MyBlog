@@ -188,10 +188,10 @@ export function PostMiniAgent() {
       <p>ReAct 循环就是想、动、看结果，再想、再动、再看，直到想明白为止。论文里叫 ReAct，代码里就是一个 for 循环。Thought、Action、Observation 三个词，分别对应模型想、代码执行、结果回到模型手里。</p>
 
       <img
-        src={`${process.env.PUBLIC_URL}/mini-agent-loop.svg`}
-        alt="Agent 循环示意图，用户提问、模型决策、执行工具、结果回填，再问一次模型，直到不调工具就输出答案"
-        width="1200"
-        height="540"
+        src={`${process.env.PUBLIC_URL}/mini-agent-100-lines-illustrations/01-loop-track.png`}
+        alt="小黑坐环形轨道小车上，手里捏着纸条，先想想、动手、看结果、再想一遍"
+        width="2048"
+        height="1152"
         decoding="async"
       />
 
@@ -244,6 +244,14 @@ export function PostMiniAgent() {
       <p>Agent 的记忆是 messages 这个列表。系统提示词、用户问题、每轮模型的回复、每个工具的执行结果，全攒在这里。列表一空，模型就什么都不记得了。</p>
       <p>没有它，模型每轮都是失忆的。上一轮调了什么工具，得到了什么结果，下一轮全不知道。把工具结果 append 回历史，就是 Observation 回到模型手里的那一步。循环能越跑越明白，全靠这个列表在攒上下文。</p>
       <p>上下文窗口有限，列表会越攒越长，生产系统要做压缩和摘要。机制就是这个列表，先把机制搞对，再谈优化。</p>
+
+      <img
+        src={`${process.env.PUBLIC_URL}/mini-agent-100-lines-illustrations/02-memory-stack.png`}
+        alt="小黑踮脚顶着一摞歪歪斜斜的纸，列表一空就失忆"
+        width="2048"
+        height="1152"
+        decoding="async"
+      />
 
       <Heading id="guard">护栏就是步数上限和错误处理</Heading>
       <p>两个护栏摆在这里，Agent 才敢一直跑。少了它们，一次失控就能让程序停不下来。</p>

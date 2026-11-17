@@ -137,10 +137,10 @@ export function PostAgentMemory() {
       <p>那一下挺打击人的。之前写 100 行 Agent 的时候，我还写过一句挺得意的话，记忆就是消息历史。单会话里没错，可关掉再打开，消息历史也没了。我得先弄明白，到底什么才算记住。</p>
 
       <img
-        src={`${process.env.PUBLIC_URL}/agent-memory-loop.svg`}
-        alt="记忆循环示意图，上下文里的对话经 memory 工具写进磁盘上的 USER.md、MEMORY.md 和 sessions.jsonl，下个会话启动时再拼进 system prompt"
-        width="1200"
-        height="560"
+        src={`${process.env.PUBLIC_URL}/agent-memory-implementation-illustrations/03-blackboard-eraser.png`}
+        alt="小黑拿着大黑板擦擦掉刚写好的字，关掉就没了"
+        width="2048"
+        height="1152"
         decoding="async"
       />
 
@@ -156,19 +156,27 @@ export function PostAgentMemory() {
       <p><strong>原话，是上次具体说了什么。</strong>某次对话的原句，某个决定的上下文。最全，也最占地方，平时根本用不着，只有你问“上次我们聊了什么”的时候才翻。</p>
       <p>这三样的脾气是反的。画像和事实要精简，原话要完整。精简的可以每次都读，完整的只能现搜现读。很多记忆系统做不好，根子就在这里。把原话当画像存，启动时全塞进去，窗口很快就满了。把画像当原话存，只留一句摘要，关键细节丢了，你一问它就答不上来。我的办法很土。分开存，图的是让“每次都读”和“现搜现读”各用各的预算。</p>
 
+      <img
+        src={`${process.env.PUBLIC_URL}/agent-memory-implementation-illustrations/01-three-drawers.png`}
+        alt="三层抽屉柜，上层画像卡、中层笔记本、下层挂锁加原话纸叠，小黑把纸条推进中层抽屉"
+        width="2048"
+        height="1152"
+        decoding="async"
+      />
+
       <Heading id="context">记忆和上下文，真不是一回事</Heading>
       <p>我有个挺喜欢的比方。上下文是桌面，记忆是笔记本。桌面上只能放正在用的几张纸，重要的写进笔记本收起来，下次要用再拿出来摊在桌面上。桌面是模型当下能看到的东西，系统提示词、本轮对话、工具返回的结果。存在内存里，进程一退就没了，塞满了还得截断，越长越贵、越慢。笔记本是磁盘或者数据库里的东西，关掉再打开还在，可以很大，但模型不会自动全读。</p>
-      <p>记忆要进上下文才算想起来，上下文要变成记忆才算记住，下一轮再进上下文。只写不读，记忆是死档。只读不写，记忆是旧报纸。上面那张图画的就是这个圈，箭头不是单向的，点开能看大图。</p>
+      <p>记忆要进上下文才算想起来，上下文要变成记忆才算记住，下一轮再进上下文。只写不读，记忆是死档。只读不写，记忆是旧报纸。写和读之间就是这么一个圈，箭头不是单向的。</p>
       <p>Hermes 有个地方我一开始没想通。它的记忆是会话开始时的冻结快照，为了保住 prompt cache 不被打碎，本会话里新写的记忆只落盘，不改当前提示词，要下个会话才生效。写和用之间隔了一个会话边界。一个是当下在用的快照，一个是磁盘上的底本。</p>
 
       <Heading id="minimal">三百六十行，记一个人够了</Heading>
       <p>最小项目只有一个文件，约 360 行，标准库加 openai。跑法跟之前那篇 100 行 Agent 一样。没 Key 先跑 <code>--mock</code> 看流程，有 Key 再跑 DeepSeek 的 deepseek-chat。它的记忆就是上面分好的三层，照着 Hermes 的做法缩的。</p>
 
       <img
-        src={`${process.env.PUBLIC_URL}/agent-memory-layers.svg`}
-        alt="三层记忆示意图，L1 工作记忆是本轮 messages，快而小；L2 长期记忆是 USER.md 和 MEMORY.md，精简且跨会话；L3 情景记忆是 sessions.jsonl，最全但只在翻旧账时搜"
-        width="1200"
-        height="560"
+        src={`${process.env.PUBLIC_URL}/agent-memory-implementation-illustrations/04-three-story-house.png`}
+        alt="小黑背着纸条爬三层小楼的楼梯，L1、L2、L3 各一层"
+        width="2048"
+        height="1152"
         decoding="async"
       />
 
@@ -186,10 +194,10 @@ export function PostAgentMemory() {
       <p>最小版跑通之后，我再去翻别人家的文档，就能看出来每家在同一个问题上舍了什么、要了什么。五家大致分两派。文件派启动时全量读，数据库派用时现搜。图先摆在这儿。</p>
 
       <img
-        src={`${process.env.PUBLIC_URL}/agent-memory-harness.svg`}
-        alt="两派记忆对照图，左边文件派是 Claude Code、Codex、Hermes，启动时全量读 MD 文件；右边数据库派是 LangGraph、Google ADK、CrewAI，用时按用户或向量现搜"
-        width="1200"
-        height="560"
+        src={`${process.env.PUBLIC_URL}/agent-memory-implementation-illustrations/05-two-bookshops.png`}
+        alt="左边小黑把整架书搬上桌，右边小黑只抽一本，文件派和数据库派"
+        width="2048"
+        height="1152"
         decoding="async"
       />
 
@@ -244,6 +252,14 @@ export function PostAgentMemory() {
         <li><strong>翻旧账要排除本会话。</strong>不排除的话，刚问的那句“上次我说了喜欢喝什么？”本身就会命中关键词，把真正的原话挤出前三条。修法是在 search 里加一个 <code>exclude_session_id</code> 参数。检索的输入里混进了查询本身，关键词搜和向量搜都会遇到，只是表现不一样。</li>
       </ul>
       <p>这三个坑看着各不相干，毛病都在 harness 这边。模型再聪明，也救不了把问句当事实写进去的提取、撞号的会话 ID、和被查询污染的检索。记忆系统的质量，一大半在这些琐碎的工程细节上。</p>
+
+      <img
+        src={`${process.env.PUBLIC_URL}/agent-memory-implementation-illustrations/02-three-pipes.png`}
+        alt="三根漏水的水管，小黑蹲着用大扳手拧中间接头"
+        width="2048"
+        height="1152"
+        decoding="async"
+      />
 
       <Heading id="closing">写完之后，我还想改什么</Heading>
       <p>session_search 现在是关键词匹配，够用，但量一大肯定不够。换成向量检索是迟早的事，不过得先有这一步，才需要向量库。在此之前关键词加引用图就够了，上一篇讲缓存的文章已经把这个顺序写过，我不想再重复一遍。</p>

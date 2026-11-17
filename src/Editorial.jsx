@@ -209,6 +209,13 @@ export function BlogPost() {
       appendixSections={POST_APPENDIX}
     >
       <p>改版之前，我先问了自己一个问题。几年以后，我还愿不愿意回到这里？这个问题一出来，很多事就不用纠结了。加不加功能，换不换花样，都往后放。我想要一个能回来干活的地方。写点东西，放上去。别人来读，不费劲。下次想改，动手就能改。</p>
+      <img
+        src={`${process.env.PUBLIC_URL}/personal-website-as-long-term-project-illustrations/01-door-key.png`}
+        alt="小黑抱着一把大钥匙站在半开的门前，门上挂着还回来吗的牌子"
+        width="2048"
+        height="1152"
+        decoding="async"
+      />
       <p>很多人把个人网站当成一张线上名片。头像、经历、几个链接，摆上去就算完了。名片是给别人看的，网站还可以留东西。过程留下来，想法连起来，过一阵子再翻，自己变了没有，一眼就能看出来。</p>
 
       <Heading id="corner">一个属于自己的角落</Heading>
@@ -233,6 +240,13 @@ export function BlogPost() {
       <p>看别人喜欢的个人网站，最容易照搬的是表面。字体、颜色、头像摆在哪儿，一眼就能抄走。我看的时候，多留意了一处。页面上有几个元素在同时抢先看我。</p>
       <p>改版就从这里下手。装饰去掉了，导航只剩关于和文章，文章列表也回到标题加日期的老样子。首页不再想着证明自己多丰富，仅有的内容反而清楚了。</p>
       <p>减法不是把所有网站削成一个样。头像插画留着，中文排版留着，偏暖的纸张色也留着。克制是让个性出现在该出现的地方，别的都让开。</p>
+      <img
+        src={`${process.env.PUBLIC_URL}/personal-website-as-long-term-project-illustrations/02-remove-flags.png`}
+        alt="小黑踮脚把页面上多余的小旗一面面摘下来，只留关于和文章两面"
+        width="2048"
+        height="1152"
+        decoding="async"
+      />
 
       <Heading id="writing">写文章，也是在整理经验</Heading>
       <p>写文章最直接的好处，是逼我把我好像知道写成一段别人也能看懂的话。一个项目怎么开始，为什么这样选，哪里判断错了，不写下来，模糊的经验就一直模糊着。</p>

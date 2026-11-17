@@ -123,6 +123,15 @@ export function PostClaudeSubagents() {
       <blockquote>
         <p>审查者值钱的地方，在它改不了。</p>
       </blockquote>
+
+      <img
+        src={`${process.env.PUBLIC_URL}/claude-code-subagents-code-reviewer-illustrations/01-hands-tied-reviewer.png`}
+        alt="小黑双手被绳子绑在身后，弯腰读代码纸，锤子够不着还打了红叉"
+        width="2048"
+        height="1152"
+        decoding="async"
+      />
+
       <p>只读也有代价。审查者看不到你刚在主对话里讨论过的取舍，除非你在委托时写进去。它也不能顺手跑一次修复验证。官方文档里 debugger 示例就是为了补这一块。同一个任务，审查用只读的角色，修复用能改代码的角色，两个角色之间用报告交接。一个人不拿两把钥匙。</p>
 
       <Heading id="context-isolation">子代理卖的是上下文隔离</Heading>
@@ -131,6 +140,14 @@ export function PostClaudeSubagents() {
       <p>内置的 <code>Explore</code> 和 <code>Plan</code> 是这个思路最干净的体现。它们是只读代理，启动时不加载 <code>CLAUDE.md</code> 和 git 状态快照，为的就是让研究更快、更便宜。<code>Explore</code> 还分了三档彻底程度，quick、medium、very thorough。官方自己也在教你一件事。探索的深度按预算定。先想清楚这次要找的东西值多少上下文，再决定派多彻底的代理去。</p>
       <p>并行研究是子代理的常见用法。文档也写了，相互独立的调查可以同时派多个子代理，最后由主对话综合。在我看来，这只是隔离顺带的好处。要不要用子代理，看有多少中间输出不值得留在主对话里。一次任务的输出本身就是你要反复引用的结论，那它留在主对话里更好，派子代理只会多一次转述的损耗。</p>
       <p>还有一个容易被忽略的细节。子代理从零开始。它看不到你的对话历史、你已调用的 skill、你已读过的文件。主对话要给它写一条概括任务的委托消息，它以此为起点。委托提示词写得好不好，差不多直接决定了子代理好不好。帮我看看这段代码，和审查这次提交里新增的鉴权逻辑，重点看越权与错误处理，输出文件与行号加严重程度，是两种完全不同的委托。前者把判断的责任推给了子代理，后者把判断的标准留在了自己手里。</p>
+
+      <img
+        src={`${process.env.PUBLIC_URL}/claude-code-subagents-code-reviewer-illustrations/02-context-box-sealed.png`}
+        alt="小黑把皱纸塞进纸箱封好，只递出一张干净纸条"
+        width="2048"
+        height="1152"
+        decoding="async"
+      />
 
       <Heading id="contract">一张 frontmatter，就是一份组织契约</Heading>
       <p>子代理的定义方式简单得有点反直觉。一个 Markdown 文件，顶部一段 YAML frontmatter，下面是系统提示词。frontmatter 里只有 <code>name</code> 和 <code>description</code> 是必填的，其余字段全是可选的。这份简单是有意的。文件的位置决定谁能用它，frontmatter 决定它能做什么。</p>

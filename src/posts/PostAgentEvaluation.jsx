@@ -121,10 +121,27 @@ export function PostAgentEvaluation() {
       </blockquote>
       <p>对照关系也得写明白。验证一次 Skill、规则或者分析流程的改动，数据集、Mock 证据、模型、评测器和执行预算都固定，只改要验证的那一部分。比较候选模型，就固定 Agent 实现和评测配置，只换模型。结果波动大的 Case 要重复跑，单次最高分说了不算。</p>
 
+      <img
+        src={`${process.env.PUBLIC_URL}/agent-evaluation-with-fixed-evidence-illustrations/01-fixed-scene-clothesline.png`}
+        alt="小黑拉紧晾衣绳，绳上夹着同一张现场纸，风吹不动"
+        width="2048"
+        height="1152"
+        decoding="async"
+      />
+
       <Heading id="metrics">质量优先，再看延迟和成本</Heading>
       <p>一套评测至少要同时看三样东西，方案质量、响应延迟、使用成本。质量先看。质量差不多的时候，才轮到延迟和成本做取舍。正式比较不能只看平均值，P95 延迟、成本波动、重复跑的稳定性都得看。平均值很容易把极端情况抹平。</p>
       <p>原文给了一组阶段性记录，正好说明这三样为什么必须一起看。deepseek-v4-flash 的 007 系列，从 001 到 007，评测解决率从 61.67% 升到 96.15%，平均延迟从 175 秒降到 113 秒，平均 Trace 成本从 $0.586780 降到 $0.198030。数字很好看，原文也写明白了，各轮显示的执行成功只说明分析跑完了，不等于方案已经合格。这些差值要归因，还得回到同样的样本、评分规则和版本变更上去看。</p>
       <p>中间那段更值得看，它不是单调往上走的。006 比 005 更快、更省，评分却从 92.31% 掉到 83.33%，到 007 才回到 96.15%。当时只看延迟和成本，很容易把一次质量回退当成优化成功。评测系统就是在这种时候把回落抓住，再带回低分案例里分析。</p>
+
+      <img
+        src={`${process.env.PUBLIC_URL}/agent-evaluation-with-fixed-evidence-illustrations/02-regression-leaking-bucket.png`}
+        alt="小黑往木桶里倒水，桶底有洞，水位漏到 83"
+        width="2048"
+        height="1152"
+        decoding="async"
+      />
+
       <p>两张图只画原文点过名的数字。两端是 001 和 007，质量、延迟、成本同时在场。中间单独抽出 005 到 007，那次回落原文点了名。002 到 004 没有单列的解决率，图上留空，不补。</p>
       <MetricChart
         title="001 与 007，质量、延迟、成本"

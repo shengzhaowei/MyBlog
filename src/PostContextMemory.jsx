@@ -101,6 +101,13 @@ export function PostContextMemory() {
       <p>这样看，注入策略只剩两个动作。Inline 是把近期很可能用到的信息直接放进窗口，省掉一次工具调用的往返，相当于缓存命中。Spill 是把超出预算或低频使用的内容留在窗口外，只留摘要和引用，需要时再读，相当于把数据换出到磁盘，指针还在。</p>
       <p>具体注入分三步。先从最少的信息开始，只给当前对象的 ID 和内容摘要，像虚拟内存起始只映射一页。然后按局部性逐步展开。时间上，刚讨论过的话题很可能再次被提起。空间上，一条消息带上它前后相邻的消息和它所回复的那条，一条代码评论带上它所在讨论的上下文。长内容没法全部 Inline，就设一个较小的截断上限，超出部分 Spill，保留续读入口。模型需要完整内容时，再调用工具读取。</p>
       <p>Inline 和 Spill 就是在用缓存管理的办法做注入决策。热数据零成本命中，冷数据不占窗口，窗口的占用始终有上界。</p>
+      <img
+        src={`${process.env.PUBLIC_URL}/context-window-as-cache-illustrations/01-cache-drawers.png`}
+        alt="小黑踮脚把热卡片塞进顶层抽屉，冷卡片留在大纸箱里，只留一张小纸条当指针"
+        width="2048"
+        height="1152"
+        decoding="async"
+      />
 
       <Heading id="refs">已有引用，何必去猜</Heading>
       <p>整个设计里，我最喜欢的是这一下。RAG 默认你不知道哪两个东西相关，得靠向量相似度去猜。Agent 系统里的事件不一样，关联是现成的。消息属于哪个 Thread，系统早就分好了。哪个 Worker 处理它，是 Router 派的。Worker 订阅了哪些 Thread，系统里有记录。Thread 对应哪个 PR，工具调用回来就知道。</p>
@@ -175,6 +182,13 @@ export function PostContextMemory() {
             ],
           },
         ]}
+      />
+      <img
+        src={`${process.env.PUBLIC_URL}/context-window-as-cache-illustrations/02-chain-book.png`}
+        alt="小黑守着一本只摊开一页的大笔记本，手里拿着摘要纸条"
+        width="2048"
+        height="1152"
+        decoding="async"
       />
 
       <Heading id="small">在我那个小系统上怎么用</Heading>

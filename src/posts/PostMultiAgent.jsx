@@ -145,22 +145,22 @@ export function PostMultiAgent() {
       <p>协调员调它，和调 <code>lookup</code>、<code>calc</code> 没有任何区别。Hermes 的 <code>delegate_task</code>、OpenAI Agents SDK 的 handoff，底下也是这个工具，外面又包了一层路由、日志与权限。完整核心代码在文末附录。</p>
       <p>流程跑起来是三步。协调员第 1 步一次调两个 <code>delegate_task</code>，并行派调研员和分析员。拿到他俩的结果后，第 2 步派写手写文件。第 3 步汇总给用户。不用 Key 也能验证，假模型按这个剧本走，写出的 <code>brief.md</code> 是总销量 425，平均 141.7，丰台店最高。</p>
       <img
-        src={`${process.env.PUBLIC_URL}/multi-agent-context.svg`}
-        alt="上下文隔离示意图，协调员只看到摘要，调研员、分析员、写手各自有独立的上下文窗口，互相看不到对方的过程"
-        width="1200"
-        height="540"
+        src={`${process.env.PUBLIC_URL}/multi-agent-guide-illustrations/01-paper-planes.png`}
+        alt="协调员小黑站在凳上同时掷出两架纸飞机，两边小桌上的小黑伸手接"
+        width="2048"
+        height="1152"
         decoding="async"
       />
-      <p>这张图，箭头不用细看，三个窗口的边界才要紧。子 Agent 拿的是全新对话，只看到分给它的任务，看不到父 Agent 的历史。父 Agent 也只拿到子 Agent 交回的一句话摘要，看不到子 Agent 的中间过程。这叫上下文隔离，也是 sub-agent 存在的理由。并行只是顺带的收益。</p>
+      <p>派活就是这样发生的。协调员第 1 步一次调两个 delegate_task，调研员和分析员并行走。第 2 步派写手写文件，第 3 步汇总给用户。子 Agent 拿的是全新对话，只看到分给它的任务，看不到父 Agent 的历史。父 Agent 也只拿到子 Agent 交回的一句话摘要，看不到子 Agent 的中间过程。这叫上下文隔离，也是 sub-agent 存在的理由。并行只是顺带的收益。</p>
       <p>隔离的好处是每个窗口都很小，不会互相污染。代价是摘要会丢细节。协调员给子 Agent 的任务写得越具体、要求返回的格式越结构化，丢得越少。后面六个项目里，你会反复看到这个取舍换了不同的名字出现。</p>
 
       <Heading id="patterns">五种组织方式</Heading>
       <p>多智能体一个词底下，是五种不同的组织方式。区分它们的标准只有一个。下一步是谁决定的。</p>
       <img
-        src={`${process.env.PUBLIC_URL}/multi-agent-patterns.svg`}
-        alt="五种多智能体组织方式示意图，协调员-工人、流水线、并行扇出、群体移交、辩论与评审"
-        width="1200"
-        height="640"
+        src={`${process.env.PUBLIC_URL}/multi-agent-guide-illustrations/03-turntable-patterns.png`}
+        alt="小黑转动怪转盘，指针指向不同的工位牌"
+        width="2048"
+        height="1152"
         decoding="async"
       />
       <ul>
@@ -175,6 +175,13 @@ export function PostMultiAgent() {
       <Heading id="cost">什么时候不该用多智能体</Heading>
       <p>先说代价，再说收益。Anthropic 在 2025 年 6 月公开的多智能体研究系统里，给了一组很诚实的数字。在其内部研究评测上，Opus 4 做领队、Sonnet 4 做工人的多智能体系统，比单 Agent 的 Opus 4 高 90.2%。同一篇文章也写了价格。多智能体系统约用单轮对话 15 倍的 token，单 Agent 约用 4 倍。</p>
       <p>这两个数字要一起读。90.2% 是内部评测的结果，不是给所有任务的承诺。15 倍是为并行探索与多份上下文付的钱。任务本身没有足够的并行度，这笔钱就白花了。顺序推理、环环相扣的任务，拆开反而更慢、更贵，还多了一层汇总时丢信息的风险。</p>
+      <img
+        src={`${process.env.PUBLIC_URL}/multi-agent-guide-illustrations/02-cost-scale.png`}
+        alt="天平左盘一枚奖牌、右盘堆满硬币压得翘起，小黑踮脚再添一枚"
+        width="2048"
+        height="1152"
+        decoding="async"
+      />
       <ul>
         <li><strong>值得拆。</strong>调研、对比、审查。子任务之间基本独立，各自值得一个上下文窗口，最后要的是一份汇总。</li>
         <li><strong>不值得拆。</strong>一步错步步错的推理链、共享同一份文件的反复修改、答案本身很短的问答。单 Agent 加一个好工具，往往更快更便宜。</li>
@@ -308,13 +315,13 @@ pipeline = SequentialAgent(name="pipeline",
       <p>第二张按你要什么分。想要最短的路，选 OpenAI Agents SDK。想要流程最确定，选 Google ADK。想要图与检查点，选 LangGraph。想要团队一眼看懂，选 CrewAI。想要辩论与评审，选 AutoGen。想要结构化文档流水线，选 MetaGPT。没有哪一个在所有维度上赢，它们赢的维度本来就不一样。</p>
       <p>第三张是另外两个值得读的项目，放在这里是因为它们回答了上面六个没回答的问题。CAMEL 是 <code>camel-ai/camel</code>，最早把角色扮演做成多智能体研究框架的项目。两个 Agent，一个扮用户、一个扮助手，用 inception 提示词互相出题、互相完成任务，研究的是 Agent 之间如何协作本身，交付某个产品不在它的目标里。Hermes-CN-Core 是 <code>Eynzof/Hermes-CN-Core</code>，我在本地核查过的版本。它原生就有 <code>delegate_task</code>，单批并行派生子 Agent，与 <code>agent_swarm</code>，按模板批量派生，最多 128 个。默认只允许派生一层、最多 10 个并发子 Agent，子 Agent 继承父 Agent 的 MCP 工具集，但禁掉 <code>delegate_task</code> 等六个工具。和手撕版的三条安全线是同一组决定，只是写进了内核。</p>
       <img
-        src={`${process.env.PUBLIC_URL}/multi-agent-layers.svg`}
-        alt="从手撕到框架的四层示意图，单 Agent 循环、派生、编排、工程化，每一层只解决一个问题"
-        width="1200"
-        height="520"
+        src={`${process.env.PUBLIC_URL}/multi-agent-guide-illustrations/04-three-bricks.png`}
+        alt="小黑把派活、隔离、汇总三块砖砌成一面小墙"
+        width="2048"
+        height="1152"
         decoding="async"
       />
-      <p>这张图是全文的选型尺。只做拆任务、并行做、汇总，第 2 层就够了。要分支回退、断点续跑、审计每一步，才需要第 3、4 层。框架值钱的地方，大多在第 4 层，检查点、追踪、权限、审批、超时与重试上限。</p>
+      <p>多智能体拆开看，只有三件事。派活、隔离、汇总。只做拆任务、并行做、汇总，第 2 层就够了。要分支回退、断点续跑、审计每一步，才需要第 3、4 层。框架值钱的地方，大多在第 4 层，检查点、追踪、权限、审批、超时与重试上限。</p>
 
       <Heading id="closing">收尾，先手撕，再选框架</Heading>
       <p>开几个 Agent 很容易。难的是让它们互相看不见不该看的东西、只交回该交的东西、最后汇总成一个能用的答案。手撕版的 150 行里，这三件事分别对应三行代码。<code>delegate_task</code>，全新对话的 <code>messages</code> 初始化，以及只返回摘要的约定。</p>
