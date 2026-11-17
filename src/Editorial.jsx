@@ -20,7 +20,6 @@ export const POST_ERP_AGENT_PATH = '/posts/erp-agent-chatbi';
 export const POST_MINI_AGENT_PATH = '/posts/mini-agent-100-lines';
 export const POST_MULTI_AGENT_PATH = '/posts/multi-agent-guide';
 export const POST_AGENT_MEMORY_PATH = '/posts/agent-memory-implementation';
-export const POST_CLAUDE_CODE_SOURCE_BOOK_PATH = '/posts/claude-code-source-book';
 
 const SocialLinks = () => (
   <div className="ed-socials" aria-label="社交链接">
@@ -85,10 +84,6 @@ export function EditorialHome() {
           <section className="ed-section ed-reveal" id="posts">
             <h2>文章</h2>
             <ul className="ed-list ed-posts">
-              <li>
-                <Link to={POST_CLAUDE_CODE_SOURCE_BOOK_PATH}>Claude Code 的源码里，还藏着一套没发布的 Claude Code</Link>
-                <time dateTime="2026-11-17">2026.11.17</time>
-              </li>
               <li>
                 <Link to={POST_AGENT_MEMORY_PATH}>Agent 是怎么记住你的</Link>
                 <time dateTime="2026-11-17">2026.11.17</time>

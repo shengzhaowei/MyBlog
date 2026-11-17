@@ -215,6 +215,7 @@ const ThemeToggle = () => {
 
 export const SiteHeader = ({ current, postsHref }) => {
   const [scrolled, setScrolled] = useState(false);
+  const [booksOpen, setBooksOpen] = useState(false);
   useScrollFrame(() => {
     const next = window.scrollY > 8;
     setScrolled((prev) => (prev === next ? prev : next));
@@ -227,6 +228,34 @@ export const SiteHeader = ({ current, postsHref }) => {
         <nav className="ed-nav" aria-label="主导航">
           <Link to="/" aria-current={current === 'about' ? 'page' : undefined}>关于</Link>
           <a href={postsHref} aria-current={current === 'posts' ? 'page' : undefined}>文章</a>
+          {/* 详解Agent：悬停或点开下拉，选一本电子书进去 */}
+          <div
+            className="ed-nav-drop"
+            onMouseEnter={() => setBooksOpen(true)}
+            onMouseLeave={() => setBooksOpen(false)}
+          >
+            <button
+              type="button"
+              className="ed-nav-drop-btn"
+              aria-haspopup="true"
+              aria-expanded={booksOpen}
+              onClick={() => setBooksOpen((prev) => !prev)}
+              onKeyDown={(event) => {
+                if (event.key === 'Escape') setBooksOpen(false);
+              }}
+            >
+              详解Agent
+              <span className="ed-nav-drop-caret" aria-hidden="true">▾</span>
+            </button>
+            {booksOpen && (
+              <div className="ed-nav-drop-menu" role="menu">
+                <Link to="/books/claude-code" role="menuitem" onClick={() => setBooksOpen(false)}>
+                  <span className="ed-nav-drop-title">Claude Code</span>
+                  <span className="ed-nav-drop-desc">源码精读电子书</span>
+                </Link>
+              </div>
+            )}
+          </div>
         </nav>
         <ThemeToggle />
       </div>

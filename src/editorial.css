@@ -158,6 +158,69 @@
   right: 0;
 }
 
+/* 详解Agent 下拉：悬停或点开，菜单绝对定位在按钮下方 */
+.ed-nav-drop {
+  position: relative;
+}
+
+.ed-nav-drop-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25em;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+}
+
+.ed-nav-drop-caret {
+  font-size: 0.75em;
+  color: var(--ed-muted);
+}
+
+.ed-nav-drop-menu {
+  position: absolute;
+  top: calc(100% + 0.6rem);
+  right: 0;
+  min-width: 15rem;
+  padding: 0.4rem;
+  background: var(--ed-bg);
+  border: 1px solid var(--ed-rule);
+  border-radius: 0.5rem;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+  z-index: 40;
+}
+
+.ed-nav-drop-menu a {
+  display: block;
+  padding: 0.55rem 0.75rem;
+  border-radius: 0.35rem;
+  text-decoration: none;
+}
+
+.ed-nav-drop-menu a::after {
+  display: none;
+}
+
+.ed-nav-drop-menu a:hover {
+  background: var(--ed-soft);
+}
+
+.ed-nav-drop-title {
+  display: block;
+  font-weight: 600;
+  color: var(--ed-text);
+}
+
+.ed-nav-drop-desc {
+  display: block;
+  margin-top: 0.1rem;
+  font-size: 0.78rem;
+  color: var(--ed-muted);
+}
+
 .ed-hero {
   display: flex;
   align-items: flex-start;

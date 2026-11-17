@@ -4,7 +4,7 @@ import { FaHome } from 'react-icons/fa';
 const Navigation = () => {
   const { pathname } = useLocation();
 
-  if (pathname === '/' || pathname.startsWith('/posts/')) {
+  if (pathname === '/' || pathname.startsWith('/posts/') || pathname.startsWith('/books/')) {
     return null;
   }
 

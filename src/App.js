@@ -1,5 +1,5 @@
 import './App.css';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, Navigate } from 'react-router-dom';
 import Navigation from './Nav';
 import { EditorialHome, BlogPost } from './Editorial';
 import { PostContextMemory } from './PostContextMemory';
@@ -9,7 +9,7 @@ import { PostErpAgent } from './posts/PostErpAgent';
 import { PostMiniAgent } from './posts/PostMiniAgent';
 import { PostMultiAgent } from './posts/PostMultiAgent';
 import { PostAgentMemory } from './posts/PostAgentMemory';
-import { PostClaudeCodeSourceBook } from './posts/PostClaudeCodeSourceBook';
+import { ClaudeCodeBookHome, ClaudeCodeBookChapter } from './books/ClaudeCodeBook';
 import SpotifyRec from './Projects/SpotifyRec';
 import Projecttwo from './Projects/MangaProjects';
 import Interests from './More/interests';
@@ -28,7 +28,10 @@ function App() {
         <Route path="/posts/mini-agent-100-lines" element={<PostMiniAgent />} />
         <Route path="/posts/multi-agent-guide" element={<PostMultiAgent />} />
         <Route path="/posts/agent-memory-implementation" element={<PostAgentMemory />} />
-        <Route path="/posts/claude-code-source-book" element={<PostClaudeCodeSourceBook />} />
+        <Route path="/books/claude-code" element={<ClaudeCodeBookHome />} />
+        <Route path="/books/claude-code/:chapterId" element={<ClaudeCodeBookChapter />} />
+        {/* 旧文章地址改电子书后留一个跳转，之前给过的链接不会白屏 */}
+        <Route path="/posts/claude-code-source-book" element={<Navigate to="/books/claude-code" replace />} />
         <Route path="/spotifyrecs" element={<SpotifyRec />} />
         <Route path="/mangaproject" element={<Projecttwo />} />
         <Route path="/interests" element={<Interests />} />
