@@ -87,10 +87,24 @@ export function PostContextMemory() {
         <li>延迟不敏感，可以承受检索步骤的开销。</li>
       </ul>
       <p>这些默认的东西，在大多数场景里没错。过去两年我们做的，大多是聊天机器人。用户提问，系统检索，模型回答，会话结束。方案就是给这种交互形态做的，只是很少有人把这话挑明。</p>
+      <img
+        src={`${process.env.PUBLIC_URL}/context-window-as-cache-illustrations/03-infographic-four-defaults.png`}
+        alt="四条默认并排摆开：一次收齐、不留状态、数据不多、不怕慢，每块都钉着一颗钉子，方案是给聊天机器人做的"
+        width="2048"
+        height="1152"
+        decoding="async"
+      />
 
       <Heading id="online">持续在线改变了什么</Heading>
       <p>一个持续在线的 Agent，把上面每一条默认都打破了。多个任务并行，运行周期按月算，事件源源不断涌进来。常规方案放进去，失效的方式各不相同，指向倒是一致的。</p>
       <p>向量检索先碰上语义漂移。修登录 bug 和修认证问题，在向量空间里离得很近，可能属于两个完全不同的系统。检索回来的东西，很可能跟眼前这件事没关系。</p>
+      <img
+        src={`${process.env.PUBLIC_URL}/context-window-as-cache-illustrations/04-comparison-semantic-drift.png`}
+        alt="左右两颗长得一样的螺丝，左边修登录 bug，右边修认证问题，中间磁铁写着看着很像，下面写长得像，不是一家"
+        width="2048"
+        height="1152"
+        decoding="async"
+      />
       <p>一段代码评审的对话被切块之后，谁在回复谁、属于哪个 PR、关联哪个 issue，这些关系全没了。向量只留下了词义上的相似。检索结果还解释不清，每条新事件进来都要付一次嵌入成本。这笔账在持续在线的场景里，算不过来。</p>
       <p>滑动窗口的切割点，可能正好落在关键决策上。摘要的摘要，会逐层失真。五个并行任务的上下文挤在同一个窗口里，互相稀释注意力。长上下文呢，每个请求都为整个窗口付 Prefill 成本，模型还会在超长窗口的中间迷路。Lost in the middle 是被反复观察到的现象。</p>
       <p>一个跨月运行的 Agent 攒下的上下文，最终会超过任何窗口。知识图谱那边的问题出在抽取上。谁来抽，抽得多准，schema 演进谁来维护，都是持续的成本。</p>

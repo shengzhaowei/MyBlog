@@ -126,6 +126,14 @@ export function PostErpAgent() {
 
       <p>我们选了 ChatBI 当 MVP，架构按 Agent 留口子。接口、权限、审计都按能执行写操作的强度来设计，第一阶段只开放只读查询。读可信了，写的口子才敢开。</p>
 
+      <img
+        src={`${process.env.PUBLIC_URL}/erp-agent-chatbi-illustrations/06-comparison-two-doors.png`}
+        alt="两扇门对照，左边 ChatBI 只读问答开着小门，右边 Agent 读写执行挂着锁链的大门，分界线是权限"
+        width="2048"
+        height="1152"
+        decoding="async"
+      />
+
       <Heading id="architecture">四层架构，只读是底线</Heading>
       <p>整个系统分四层，客户端、网关层、理解层、数据层。问题向下走，答案原路向上回。</p>
 
@@ -203,6 +211,14 @@ export function PostErpAgent() {
       <Heading id="kernel">不用重写内核</Heading>
       <p>想做 Agent 开发，是不是要先设计一套自己的 Agent 加 harness？不用。内核用开源的，原样用，不改源码。定制发生在三层，工具层是数据服务和业务工具，管控层是登录、审计和部署形态，评测层是题库、打分和回归。</p>
       <p>读内核源码是学习的最好方式。主循环、工具调用、上下文是怎么拼的，看懂它就理解 harness 是怎么回事了。也可以写个两百行左右的最小循环当练手，但生产上还是用成熟框架。把时间花在语义层和评测上，比重写内核划算得多。</p>
+
+      <img
+        src={`${process.env.PUBLIC_URL}/erp-agent-chatbi-illustrations/07-framework-ready-engine.png`}
+        alt="现成的发动机，中央是开源内核，周围是工具层、管控层、评测层三个定制"
+        width="2048"
+        height="1152"
+        decoding="async"
+      />
 
       <Heading id="closing">收尾，上线之前</Heading>
       <p>上线之前有一份几十项的检查清单。代码合入、口令与凭据、真实库权限、服务部署、端到端验证、回滚方案、上线后观察，逐项打勾。清单本身不难，难的是诚实，没验证的项不要打勾。</p>

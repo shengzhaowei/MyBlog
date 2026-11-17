@@ -154,12 +154,30 @@ export function PostClaudeSubagents() {
       <p>位置就是作用域，优先级也很明确。托管设置最高，其次是启动时用 <code>--agents</code> 传入的会话级定义，然后是项目里的 <code>.claude/agents/</code>，再是用户级的 <code>~/.claude/agents/</code>，最后是插件的 <code>agents/</code> 目录。同名时高优先级覆盖低优先级，项目里离工作目录最近的定义优先。这一套规则读起来像配置文件，用起来是一份组织契约。组织能统一发审查标准，项目能按自己的代码库定制。个人的习惯也留得住，三层之间不打架。</p>
       <p>对我来说，最有启发的是项目级子代理要提交进版本控制这条建议。把 <code>.claude/agents/code-reviewer.md</code> 提交上去，团队用的就是同一份审查标准、同一套输出格式。审查不再依赖某个人的提示词技巧。它是一份文件，可以被 review，可以回滚，还能随代码一起演进。这和把 lint 规则、CI 脚本放进仓库是同一个逻辑。凡是希望团队一致的东西，都应该进版本控制，别留在某个人的本地配置里。</p>
       <p>而 <code>description</code> 字段，是整份契约里最容易被低估的一行。Claude 靠它决定什么时候派这个子代理，它就是路由表。文档建议在描述里写上 <code>use proactively</code> 这类短语来鼓励主动委托，也提醒描述总和超过 15,000 个 token 时启动会警告。我是这么理解的。描述要写给路由看，别写给人看。写清触发条件，少写能力清单，细节挪到系统提示词里，那里只在子代理运行时才加载。</p>
+
+      <img
+        src={`${process.env.PUBLIC_URL}/claude-code-subagents-code-reviewer-illustrations/03-infographic-signpost-routing.png`}
+        alt="岔路口的路牌：description 是路由表，触发条件通向一扇门，系统提示词通向另一扇门"
+        width="2048"
+        height="1152"
+        decoding="async"
+      />
+
       <p>路由信息要省，执行信息要全。这个取舍和我之前项目里 Router 的设计是同一个问题。那张图里的 Router 只做接待分流，不执行重活，原因也一样。入口处的信息越轻，入口越不容易被拖垮。Claude Code 把这条规则写进了 token 预算，15,000，超过就警告。</p>
 
       <Heading id="cost-routing">模型、effort 与成本路由</Heading>
       <p>子代理的模型选择，文档给了一个清晰的优先级。单次调用传的 <code>model</code> 参数优先，其次是定义里的 <code>model</code> 字段，再次是 <code>CLAUDE_CODE_SUBAGENT_MODEL</code> 环境变量，最后才继承主对话的模型。想把所有子代理都锁在同一个模型上，再加一个 <code>CLAUDE_CODE_SUBAGENT_MODEL_FORCE=1</code>。</p>
       <p>这个顺序本身就是一种成本观。越具体的指定越优先，越全局的越是兜底。日常做法也可以照着这个顺序想。默认让子代理继承主对话模型，只在少数角色上显式降级或升级。探索、查资料、跑日志这种读得多、判断轻的活，交给 Haiku。审查、需要仔细推理的活，用 Sonnet。疑难的才值得上 Opus。文档里内置子代理的安排也是这样。Explore 在很多场景下跑 Opus 或主对话模型，claude-code-guide 这种问答类角色直接用 Haiku。</p>
       <p>再往下还有个旋钮，<code>effort</code>。low、medium、high、xhigh、max。它覆盖会话的 effort 级别，但不覆盖 <code>CLAUDE_CODE_EFFORT_LEVEL</code> 环境变量。我的看法是，effort 和模型是两条不同的成本线。模型决定谁来想，effort 决定想多深。给审查者设一个合适的 effort，比盲目升级模型更划算。一次 medium 的 Sonnet 审查，往往比一次 low 的 Opus 审查更可靠，也更便宜。</p>
+
+      <img
+        src={`${process.env.PUBLIC_URL}/claude-code-subagents-code-reviewer-illustrations/04-infographic-model-ladders.png`}
+        alt="三把高低不同的梯子：Haiku 轻活、Sonnet 审查、Opus 疑难，附 effort 五档与并发、嵌套上限"
+        width="2048"
+        height="1152"
+        decoding="async"
+      />
+
       <p>还有两个数字值得记在心里。并发子代理默认上限是 20 个，超过就拒绝生成新的，等运行数降下来才能继续。嵌套深度默认是 3 层，再往下 <code>Agent</code> 工具会被拿掉。20 和 3 都不大，这正是它们合理的地方。子代理用来隔离，派太多就乱了。真有需要持续并行、或塞不进一个上下文窗口的工作，文档建议换成独立的会话，再让 Claude 在会话之间传递发现。那已经是另一个层面的编排了。</p>
 
       <Heading id="trust-boundary">权限、Hook 与输出扫描，防失控</Heading>

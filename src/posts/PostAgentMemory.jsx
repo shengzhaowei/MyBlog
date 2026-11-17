@@ -167,6 +167,13 @@ export function PostAgentMemory() {
       <Heading id="context">记忆和上下文，真不是一回事</Heading>
       <p>我有个挺喜欢的比方。上下文是桌面，记忆是笔记本。桌面上只能放正在用的几张纸，重要的写进笔记本收起来，下次要用再拿出来摊在桌面上。桌面是模型当下能看到的东西，系统提示词、本轮对话、工具返回的结果。存在内存里，进程一退就没了，塞满了还得截断，越长越贵、越慢。笔记本是磁盘或者数据库里的东西，关掉再打开还在，可以很大，但模型不会自动全读。</p>
       <p>记忆要进上下文才算想起来，上下文要变成记忆才算记住，下一轮再进上下文。只写不读，记忆是死档。只读不写，记忆是旧报纸。写和读之间就是这么一个圈，箭头不是单向的。</p>
+      <img
+        src={`${process.env.PUBLIC_URL}/agent-memory-implementation-illustrations/06-flowchart-write-read-cart.png`}
+        alt="写读循环流程图：写进记忆、读出进上下文、再写，三步成圈"
+        width="2048"
+        height="1152"
+        decoding="async"
+      />
       <p>Hermes 有个地方我一开始没想通。它的记忆是会话开始时的冻结快照，为了保住 prompt cache 不被打碎，本会话里新写的记忆只落盘，不改当前提示词，要下个会话才生效。写和用之间隔了一个会话边界。一个是当下在用的快照，一个是磁盘上的底本。</p>
 
       <Heading id="minimal">三百六十行，记一个人够了</Heading>
@@ -265,6 +272,13 @@ export function PostAgentMemory() {
       <p>session_search 现在是关键词匹配，够用，但量一大肯定不够。换成向量检索是迟早的事，不过得先有这一步，才需要向量库。在此之前关键词加引用图就够了，上一篇讲缓存的文章已经把这个顺序写过，我不想再重复一遍。</p>
       <p>现在是模型在轮内决定记不记。每轮结束加一次 LLM 抽取会更好，把本轮对话自动提炼一两条进 MEMORY.md，抽取后移还能省当轮的延迟。遗忘也得换个办法。记忆加过期和重要性打分，满了先删不重要的。最小版那个 2000 字上限是我故意留的硬护栏，生产版得把它换成软的。</p>
       <p>循环本身不用变。上下文产生记忆，记忆回到上下文。下一步我先动检索，session_search 换成向量检索，跑一遍再看抽取后移能省多少延迟。</p>
+      <img
+        src={`${process.env.PUBLIC_URL}/agent-memory-implementation-illustrations/07-infographic-next-three-steps.png`}
+        alt="下一步三件事：向量检索、抽取后移、软遗忘三个圆角信息框并排"
+        width="2048"
+        height="1152"
+        decoding="async"
+      />
     </PostLayout>
   );
 }

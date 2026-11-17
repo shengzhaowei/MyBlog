@@ -224,6 +224,13 @@ export function BlogPost() {
       <blockquote>
         <p>不必把网站一次做到“完成”。它更应该是一个可以不断回去工作的地方。</p>
       </blockquote>
+      <img
+        src={`${process.env.PUBLIC_URL}/personal-website-as-long-term-project-illustrations/03-comparison-wind-archive.png`}
+        alt="左边风把纸片吹走，右边一只手把纸片放进档案盒，信息流吹走，网站留下"
+        width="2048"
+        height="1152"
+        decoding="async"
+      />
 
       <Heading id="reading">先让内容易读</Heading>
       <p>排版先是个阅读问题，再说风格。页面只留一个居中的内容栏，每行字数收住，标题、正文、日期和链接按同一个节奏出现。没有卡片墙，也没有为了填满屏幕多加的分栏。</p>
@@ -252,6 +259,13 @@ export function BlogPost() {
       <p>写文章最直接的好处，是逼我把我好像知道写成一段别人也能看懂的话。一个项目怎么开始，为什么这样选，哪里判断错了，不写下来，模糊的经验就一直模糊着。</p>
       <p>我希望这里的文章多记中间的过程，少记最后成的那个版本。一次具体的取舍，比一份漂亮的结论更有用。</p>
       <p>写作就这样成了网站里最结实的那部分。设计帮人读下去，项目证明做过什么，只有持续的文字，能把不同时间里的自己连起来。</p>
+      <img
+        src={`${process.env.PUBLIC_URL}/personal-website-as-long-term-project-illustrations/04-infographic-text-wall.png`}
+        alt="三块文字砖砌成的墙：设计帮人读下去、项目证明做过什么、文字最结实，文字把不同时间里的自己连起来"
+        width="2048"
+        height="1152"
+        decoding="async"
+      />
 
       <Heading id="maintain">小步发布，长期维护</Heading>
       <p>长期项目不用一开始就把所有功能规划好。改动控制在足够小的范围里，更靠谱。先让一篇文章有合适的版式，再补文章列表。手机上读得舒服了，再考虑更复杂的交互。</p>

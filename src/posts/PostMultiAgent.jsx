@@ -188,6 +188,13 @@ export function PostMultiAgent() {
         <li><strong>拆了会出事。</strong>多个工人同时写同一份文件、同一张表。协调员必须在派活时就把写作用域切开，每人一块互不重叠的地盘，否则汇总时就得救火。</li>
       </ul>
       <p>还有三条硬护栏，手撕版里就写死了，框架里也一样。扇出上限，简单问题不值得派 10 个工人。递归深度上限，只允许派生一层，防止工人再派工人。汇总格式，工人返回结构化短摘要，全文过程不交回。没有这三条，多智能体最常见的死法是跑起来停不下来，不是答错。</p>
+      <img
+        src={`${process.env.PUBLIC_URL}/multi-agent-guide-illustrations/06-infographic-three-brakes.png`}
+        alt="三道刹车：扇出上限、递归深度上限、汇总格式三个圆角信息框并排"
+        width="2048"
+        height="1152"
+        decoding="async"
+      />
 
       <Heading id="langgraph">LangGraph 把路由画成一张图</Heading>
       <p>LangGraph 的办法是把路由画成一张图。状态流过节点，边决定下一步去哪。官网仓库是 <code>langchain-ai/langgraph</code>。</p>
@@ -301,6 +308,13 @@ writer = LlmAgent(name="writer",
 pipeline = SequentialAgent(name="pipeline",
     sub_agents=[research, writer])`}</code></pre>
       <p>ADK 的树不支持 Agent 层面的环。要循环就用 <code>LoopAgent</code>，不要手动互相引用。这是它与 LangGraph 最大的分野。LangGraph 的图可以有环，ADK 的树没有环，换来的是流程永远可预测。另外两点也该知道。原生支持 MCP，工具接外部服务。原生支持 A2A，Agent 与 Agent 之间跨框架通信的协议。还有一键部署到 Vertex AI Agent Engine 的路径。</p>
+      <img
+        src={`${process.env.PUBLIC_URL}/multi-agent-guide-illustrations/07-comparison-tree-vs-graph.png`}
+        alt="左右对照：左边 ADK 的树没有环，右边 LangGraph 的图可以绕回来"
+        width="2048"
+        height="1152"
+        decoding="async"
+      />
       <p>读源码我会先看三处。<code>sub_agents</code> 的树结构，每个 Agent 只能有一个父节点。<code>output_key</code> 与 <code>session.state</code> 的传值方式。<code>LoopAgent</code> 的退出条件，<code>max_iterations</code> 或子 Agent 主动升级。它的长处是确定性最强、部署路径最完整，短处是动态路由最弱，协调员现拆任务不是它的主场。</p>
       <p>流程固定、要可预测、要部署到 Google Cloud 的生产系统，用它合适。子任务要按输入现拆、流程本身要由模型决定的探索型任务，用它不合适。</p>
 

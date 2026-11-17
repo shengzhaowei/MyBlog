@@ -240,6 +240,14 @@ export function PostMiniAgent() {
       <p>声明是一段 JSON Schema，分四块。type 固定写 function，告诉接口这是一个函数工具。name 是模型调用时返回的名字，代码靠它找到对应的 Python 函数。description 是一句话的用途说明，模型选工具全靠这句话，写得越准，调得越准。parameters 描述参数，properties 列参数名和类型，required 列必填项。模型按这个格式生成参数，代码用 json.loads 解析出来传给函数。</p>
       <p>description 写错了，工具就调乱了。把读文件的描述写成写入文件，模型想读文件时会去调写文件。工具声明是给模型看的接口文档，得认真写。</p>
 
+      <img
+        src={`${process.env.PUBLIC_URL}/mini-agent-100-lines-illustrations/03-infographic-drawer-manual.png`}
+        alt="文件柜两个抽屉，抽屉上贴着 read_file 和 write_file 的描述卡片，声明是给模型看的接口文档"
+        width="2048"
+        height="1152"
+        decoding="async"
+      />
+
       <Heading id="memory">记忆就是消息历史</Heading>
       <p>Agent 的记忆是 messages 这个列表。系统提示词、用户问题、每轮模型的回复、每个工具的执行结果，全攒在这里。列表一空，模型就什么都不记得了。</p>
       <p>没有它，模型每轮都是失忆的。上一轮调了什么工具，得到了什么结果，下一轮全不知道。把工具结果 append 回历史，就是 Observation 回到模型手里的那一步。循环能越跑越明白，全靠这个列表在攒上下文。</p>
@@ -260,6 +268,14 @@ export function PostMiniAgent() {
         <li><strong>try/except。</strong>工具出错时，把错误文本喂回去，让模型自己决定重试还是换个方法，程序不崩掉。工具出错是常态，崩掉才是事故。</li>
       </ul>
       <p>还有一个隐性护栏，只读与可控的工具。给 Agent 的工具越少、权限越小，出错的代价越小。读文件、查数据是起步的安全选择。写文件会覆盖，要慎重。删文件、改生产数据，根本不该出现在起步的工具箱里。</p>
+
+      <img
+        src={`${process.env.PUBLIC_URL}/mini-agent-100-lines-illustrations/04-infographic-step-brake.png`}
+        alt="步数条走满 10 格，到了就停，工具出错喂回去，步数上限是死循环的刹车"
+        width="2048"
+        height="1152"
+        decoding="async"
+      />
 
       <Heading id="left-out">故意没写的东西</Heading>
       <p>这 100 行故意没写很多东西。RAG 没写，多 Agent 也没写。记忆系统没写，LangChain 之类的框架也没用上。</p>
