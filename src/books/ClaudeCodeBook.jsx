@@ -96,9 +96,11 @@ export function ClaudeCodeBookHome() {
                 </div>
               </header>
               <div className="bk-series-list">
-                {CHAPTERS.filter((c) => c.track === track.id).map((chapter) => (
-                  <TocRow key={chapter.id} chapter={chapter} />
-                ))}
+                {CHAPTERS.filter((c) => c.track === track.id)
+                  .sort((a, b) => a.code.localeCompare(b.code))
+                  .map((chapter) => (
+                    <TocRow key={chapter.id} chapter={chapter} />
+                  ))}
               </div>
             </section>
           ))}

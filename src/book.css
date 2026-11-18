@@ -813,6 +813,32 @@ html[data-theme='dark'] .book {
   color: var(--bk-accent);
 }
 
+.bk-prose table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 0 0 24px;
+  font-size: 15px;
+  line-height: 1.55;
+}
+
+.bk-prose th,
+.bk-prose td {
+  padding: 8px 12px;
+  border: 1px solid var(--bk-rule-strong);
+  text-align: left;
+  vertical-align: top;
+}
+
+.bk-prose th {
+  background: var(--bk-paper-raised);
+  color: var(--bk-ink-strong);
+  font-weight: 600;
+}
+
+.bk-prose td code {
+  font-size: 0.85em;
+}
+
 /* ---------- 上下章导航 ---------- */
 
 .bk-prevnext {

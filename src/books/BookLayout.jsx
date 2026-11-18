@@ -183,7 +183,9 @@ export const BookLeftToc = ({ currentId }) => (
           {track.roman} · {track.label}
         </p>
         <ul>
-          {CHAPTERS.filter((c) => c.track === track.id).map((chapter) => (
+          {CHAPTERS.filter((c) => c.track === track.id)
+            .sort((a, b) => a.code.localeCompare(b.code))
+            .map((chapter) => (
             <li key={chapter.id}>
               <Link
                 to={chapterUrl(chapter.id)}
