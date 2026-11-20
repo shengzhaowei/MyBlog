@@ -1,6 +1,6 @@
 import React from 'react';
 import { PostLayout, Heading } from '../PostLayout';
-import { Compare, DotGrid, LineChart, MetricChart } from '../figures';
+import { LineChart, MetricChart } from '../figures';
 
 const formatPercent = (value) => (
   Number.isInteger(value) ? `${value}%` : `${Number(value).toFixed(2)}%`
@@ -220,62 +220,6 @@ export function PostAgentEvaluation() {
         decoding="async"
       />
 
-      <p>五档收成五个点，悬停、点按或者用方向键，都能读到这一档在原文里的边界。</p>
-      <DotGrid
-        title="五档评分"
-        caption="归纳自得物技术原文的评分标准，分数只从这五档里取。完整表述、包括上限和几条容易忽略的边界，见文末附录的五档评分速查。"
-        columns={5}
-        legend={[
-          { tone: 'good', label: '1，已经解决' },
-          { tone: 'good-soft', label: '0.75，轻微遗漏' },
-          { tone: 'baseline', label: '0.5，重要缺失' },
-          { tone: 'warn', label: '0.25，帮助有限' },
-          { tone: 'bad', label: '0，没有解决' },
-        ]}
-        groups={[
-          {
-            id: 'rubric',
-            title: '由左到右',
-            countLabel: '1、0.75、0.5、0.25、0，不取中间值',
-            items: [
-              {
-                id: 'score-1',
-                tone: 'good',
-                short: '1',
-                label: '1 · 已经解决',
-                detail: '已经全面解决用户的主要问题，覆盖主要评分点，没有实质性错误或矛盾。可以缺少不影响解决问题的次要细节。',
-              },
-              {
-                id: 'score-075',
-                tone: 'good-soft',
-                short: '0.75',
-                label: '0.75 · 轻微遗漏',
-                detail: '主要问题已经解决，核心结论正确，覆盖大部分主要评分点；只有轻微遗漏或表述不完整。',
-              },
-              {
-                id: 'score-05',
-                tone: 'baseline',
-                short: '0.5',
-                label: '0.5 · 重要缺失',
-                detail: '覆盖了部分主要评分点，对解决问题有帮助，但有重要内容缺失、局部错误，或未满足用户明确提出的重要约束。',
-              },
-              {
-                id: 'score-025',
-                tone: 'warn',
-                short: '0.25',
-                label: '0.25 · 帮助有限',
-                detail: '只覆盖少量主要评分点，核心结论不完整或不清晰，对解决问题只有有限帮助。主要问题没有被解决时，评分不得高于这一档。',
-              },
-              {
-                id: 'score-0',
-                tone: 'bad',
-                short: '0 · 没有解决',
-                detail: '与参考答案的核心结论相反、内容无关、输出为空，或没有覆盖任何有效期望内容。',
-              },
-            ],
-          },
-        ]}
-      />
       <p>还有几条很实际。缺少次要评分点，不应该大幅扣分。补充了参考答案里没有的内容，只要不跟核心结论或者用户约束矛盾，不加分，也不扣分。只出现在参考答案里、用户又没有明确要求的条目，只能当参考，不能变成硬性扣分项。评测器不能用自己的知识推翻参考答案的核心结论。原文要求评测器只返回分数，不输出理由。自动汇总是干净了，事后抽查就更重要。高低分和争议案例要人工复核，期望答案有问题就改，改完用统一版本重测。</p>
 
       <Heading id="tuning">调优过程会被评测抓住回落</Heading>
@@ -283,73 +227,11 @@ export function PostAgentEvaluation() {
       <p>比如“Consumer is shutting down”。只凭这句话，没法判断任务为什么停。得核对是不是把注册中心地址误当成了直连地址，注册协议和命名空间对不对。“No provider available”呢，得逐项对照环境、命名空间、分组和版本，再分清是配置不匹配、实例不可用，还是被路由过滤掉了。Failfast 或者泛化调用对不上方法，先核对那个环境下的方法契约和参数类型，别把一个不存在的方法名直接改成另一个现成的方法。</p>
       <p>这些经验只留在人脑子里，Agent 下次还会在同一类问题上晃一下。原文把能编码的部分交给了程序。采集归命令行工具，解析脚本、拉取契约、执行校验、生成问题候选和证据索引归 Python。模型读组件知识和分析指引，结合原始证据确认或者修正候选，再输出根因和修改方案。规则命中了，还不等于最终诊断。它只是把该核对什么变成了可以重复的步骤。</p>
       <p>回测的结果就是看这种做法站不站得住。按原文的新版本记录，Dubbo 专项评测由约 50% 提升至 90%，成了整体改善的重要来源。前面那次 006 的回落也得一起记住。专项变好了，整体变好了，个别轮次还是可能出现质量下滑。评测就是为了在有效和回退同时出现的时候，分清哪边是哪边。</p>
-      <MetricChart
-        title="Dubbo 专项评测"
-        caption="数字来自得物技术原文的新版本记录，专项评测由约 50% 提升至 90%。约是原文的说法，柱的起点按 50% 画。这是专项口径，与上面 007 系列的 96.15% 不是同一统计范围。"
-        series={[
-          { key: 'before', name: '原先', tone: 'baseline' },
-          { key: 'after', name: '新版本', tone: 'good' },
-        ]}
-        groups={[
-          {
-            label: '专项评测',
-            bars: [
-              { key: 'before', value: 50, display: '约 50%' },
-              { key: 'after', value: 90, display: '90%' },
-            ],
-          },
-        ]}
-      />
 
       <Heading id="models">比较模型时，只改模型这一项</Heading>
       <p>Agent 的知识、规则和执行流程都会影响分析结果，模型本身也得单独比。一边换模型，一边改提示词或者工具，最后的分数差就说不清该记在谁头上。</p>
       <p>原文整理了同一阶段的历史记录，实验名称是 HTTP &amp; Dubbo场景，第四轮。候选模型是 deepseek-v4-flash、qwen3.8-flash 和 glm5.3-flash。这组数据里，DeepSeek 的方案评分最高，GLM 的平均延迟最低。Qwen 和 GLM 的成本显示为 0.00，原文也写了，现在还确认不了，是实际没有产生费用，还是计费数据没有接进来。所以成本这一项没法比。</p>
       <p>这类对照最容易被写成选型结论，原文写得很克制。这批记录只能反映当时版本下的阶段性表现。数据集、Agent 和评测器版本要先统一起来，每个模型再重复跑，才谈得上正式比较。选的时候还是先看方案质量，质量接近了，再比延迟、成本和多次运行的稳定性。数据缺了一项，就别用这一项做决定。</p>
-      <p>实验没有给出可以并列的分数，我不另画柱状图。下面能切换的只有两边，一边是原文提醒不要写成的读法，一边是原文实际停住的地方。</p>
-      <Compare
-        title="这组模型记录能说明什么"
-        caption="左侧是原文提醒不要写成的读法，右侧是原文允许的说法。实验名称是 HTTP &amp; Dubbo场景，第四轮，候选模型为 deepseek-v4-flash、qwen3.8-flash 和 glm5.3-flash。这里没有补任何原文没给的分数。"
-        pairs={[
-          {
-            id: 'one-variable',
-            prompt: '比较模型时，还可以一起改提示词吗？',
-            before: {
-              label: '混在一起改',
-              body: '一边换模型，一边改提示词或工具。最后的分数差说不清该记在谁头上。',
-            },
-            after: {
-              label: '只改模型',
-              body: '固定 Agent 实现、数据集、Mock 证据和评测器，只切换模型，并对每个模型重复运行。',
-            },
-          },
-          {
-            id: 'ranking',
-            prompt: 'HTTP & Dubbo场景，第四轮里，谁更好？',
-            before: {
-              label: '容易写成的结论',
-              body: '方案评分最高的是 DeepSeek，平均延迟最低的是 GLM，于是可以直接选定。',
-            },
-            after: {
-              label: '原文停住的地方',
-              body: '这组记录里 DeepSeek 的方案评分最高，GLM 的平均延迟最低。它只反映当时版本的阶段性表现，还不足以形成正式选型结论。',
-            },
-          },
-          {
-            id: 'cost',
-            prompt: 'Qwen 和 GLM 的成本显示 0.00，能说它们更便宜吗？',
-            before: {
-              label: '把 0.00 当成更便宜',
-              body: '成本是 0.00，所以比 DeepSeek 省。',
-              mark: ['0.00'],
-            },
-            after: {
-              label: '原文的限制',
-              body: 'Qwen 与 GLM 的成本显示为 0.00。目前无法确认是实际没有产生费用，还是计费数据尚未接入，因此不能据此比较成本。',
-              mark: ['0.00'],
-            },
-          },
-        ]}
-      />
 
       <Heading id="keep">把修过的问题留下来</Heading>
       <p>Trace 把一条主观反馈落到具体证据上。漏查还是误读，发生在哪一步能看见。执行失败也一样。能编码的经验交给程序，语义判断交给模型。修过的问题连同 Mock 现场和人工期望一起留下来，后续版本继续在同一个现场里接受检验。</p>
