@@ -10,6 +10,7 @@ import { PostMiniAgent } from './posts/PostMiniAgent';
 import { PostMultiAgent } from './posts/PostMultiAgent';
 import { PostAgentMemory } from './posts/PostAgentMemory';
 import { PostLangchainMemory } from './posts/PostLangchainMemory';
+import { PostBgeMilvusMemory } from './posts/PostBgeMilvusMemory';
 import { ClaudeCodeBookHome, ClaudeCodeBookChapter } from './books/ClaudeCodeBook';
 import SpotifyRec from './Projects/SpotifyRec';
 import Projecttwo from './Projects/MangaProjects';
@@ -30,6 +31,7 @@ function App() {
         <Route path="/posts/multi-agent-guide" element={<PostMultiAgent />} />
         <Route path="/posts/agent-memory-implementation" element={<PostAgentMemory />} />
         <Route path="/posts/langchain-long-short-term-memory" element={<PostLangchainMemory />} />
+        <Route path="/posts/bge-m3-milvus-long-term-memory" element={<PostBgeMilvusMemory />} />
         <Route path="/books/claude-code" element={<ClaudeCodeBookHome />} />
         <Route path="/books/claude-code/:chapterId" element={<ClaudeCodeBookChapter />} />
         {/* 旧文章地址改电子书后留一个跳转，之前给过的链接不会白屏 */}
