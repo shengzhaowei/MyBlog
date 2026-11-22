@@ -216,10 +216,60 @@ const ThemeToggle = () => {
 export const SiteHeader = ({ current, postsHref }) => {
   const [scrolled, setScrolled] = useState(false);
   const [booksOpen, setBooksOpen] = useState(false);
+  const closeTimer = useRef(null);
+  const dropRef = useRef(null);
   useScrollFrame(() => {
     const next = window.scrollY > 8;
     setScrolled((prev) => (prev === next ? prev : next));
   });
+
+  // 点不到的根因：菜单 top 是 100% + 0.6rem，按钮和菜单之间有约 10px
+  // 死区，鼠标移过去先触发 onMouseLeave，菜单没等点到就卸载了；点开
+  // 也一样，移鼠标照样被 mouseleave 关掉。所以关闭改成延时 + 可取消，
+  // 再加 CSS 桥接（见 editorial.css），两层兜底。
+  const clearCloseTimer = () => {
+    if (closeTimer.current) {
+      window.clearTimeout(closeTimer.current);
+      closeTimer.current = null;
+    }
+  };
+  const openBooks = () => {
+    clearCloseTimer();
+    setBooksOpen(true);
+  };
+  const scheduleCloseBooks = () => {
+    clearCloseTimer();
+    closeTimer.current = window.setTimeout(() => setBooksOpen(false), 180);
+  };
+  const toggleBooks = () => {
+    if (booksOpen) {
+      clearCloseTimer();
+      setBooksOpen(false);
+    } else {
+      openBooks();
+    }
+  };
+
+  useEffect(() => clearCloseTimer, []);
+
+  // 点开后点外面空白处或按 Esc 关闭；点菜单里的链接本来就会关。
+  useEffect(() => {
+    if (!booksOpen) return undefined;
+    const onPointerDown = (event) => {
+      if (dropRef.current && !dropRef.current.contains(event.target)) {
+        setBooksOpen(false);
+      }
+    };
+    const onKeyDown = (event) => {
+      if (event.key === 'Escape') setBooksOpen(false);
+    };
+    document.addEventListener('mousedown', onPointerDown);
+    document.addEventListener('keydown', onKeyDown);
+    return () => {
+      document.removeEventListener('mousedown', onPointerDown);
+      document.removeEventListener('keydown', onKeyDown);
+    };
+  }, [booksOpen]);
 
   return (
     <header className={`ed-header${scrolled ? ' is-scrolled' : ''}`}>
@@ -231,24 +281,28 @@ export const SiteHeader = ({ current, postsHref }) => {
           {/* 详解Agent：悬停或点开下拉，选一本电子书进去 */}
           <div
             className="ed-nav-drop"
-            onMouseEnter={() => setBooksOpen(true)}
-            onMouseLeave={() => setBooksOpen(false)}
+            ref={dropRef}
+            onMouseEnter={openBooks}
+            onMouseLeave={scheduleCloseBooks}
           >
             <button
               type="button"
               className="ed-nav-drop-btn"
               aria-haspopup="true"
               aria-expanded={booksOpen}
-              onClick={() => setBooksOpen((prev) => !prev)}
-              onKeyDown={(event) => {
-                if (event.key === 'Escape') setBooksOpen(false);
-              }}
+              onClick={toggleBooks}
+              onFocus={openBooks}
             >
               详解Agent
               <span className="ed-nav-drop-caret" aria-hidden="true">▾</span>
             </button>
             {booksOpen && (
-              <div className="ed-nav-drop-menu" role="menu">
+              <div
+                className="ed-nav-drop-menu"
+                role="menu"
+                onMouseEnter={openBooks}
+                onMouseLeave={scheduleCloseBooks}
+              >
                 <Link to="/books/claude-code" role="menuitem" onClick={() => setBooksOpen(false)}>
                   <span className="ed-nav-drop-title">Claude Code</span>
                   <span className="ed-nav-drop-desc">源码精读电子书</span>

@@ -161,6 +161,10 @@
 /* 详解Agent 下拉：悬停或点开，菜单绝对定位在按钮下方 */
 .ed-nav-drop {
   position: relative;
+  /* 桥接按钮与菜单之间 0.6rem 的空隙：没有这层，鼠标从按钮移向菜单
+     时会先经过死区触发 mouseleave，菜单在点到之前就消失了。 */
+  padding-bottom: 0.6rem;
+  margin-bottom: -0.6rem;
 }
 
 .ed-nav-drop-btn {
@@ -191,6 +195,17 @@
   border-radius: 0.5rem;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
   z-index: 40;
+}
+
+/* 第二层桥接：菜单顶部向上伸出一条透明带，盖住与按钮之间的空隙，
+   鼠标斜着移过去也不会掉出下拉区域。 */
+.ed-nav-drop-menu::before {
+  content: "";
+  position: absolute;
+  top: -0.6rem;
+  left: 0;
+  right: 0;
+  height: 0.6rem;
 }
 
 .ed-nav-drop-menu a {
