@@ -1,6 +1,5 @@
 import React from 'react';
 import { PostLayout, Heading } from './PostLayout';
-import { Compare, DotGrid, MetricChart } from './figures';
 
 const TOC_ITEMS = [
   { id: 'assumptions', label: '老办法都默认了什么' },
@@ -130,73 +129,13 @@ export function PostContextMemory() {
         <p>你已经有引用图了，还用向量去猜相关性干什么。</p>
       </blockquote>
       <p>这个转变，收益比看着大。引用是确定性的。A 引用 B，就是相关，不会把语义相似但属于另一个系统的东西也捞回来。引用是透明的。每一步召回都能说清楚为什么，排查问题时，检索路径就是一条可以复现的链。新事件进来，也不用把整库重新嵌入，挂上 ID 和引用就行。</p>
-      <p>三条加在一起，就是我不再默认用向量去猜的原因。图里把它们并排摆了一遍。</p>
-      <Compare
-        title="已经有引用之后，检索还在猜什么"
-        caption="两侧都是这一节已经写下的对照。向量相似度负责猜，引用图负责走系统自己记下的关系。没有新增指标。"
-        pairs={[
-          {
-            id: 'guess',
-            prompt: '相关性要靠猜吗？',
-            before: {
-              label: '向量相似度',
-              body: '不知道哪两个东西相关，就用相似度去猜。「修登录 bug」和「修认证问题」会靠得很近，但可能属于两个完全不同的系统。',
-            },
-            after: {
-              label: '引用图',
-              body: '消息属于哪个 Thread、Thread 由哪个 Worker 处理、对应哪个 PR，都是系统自己写下的。A 引用 B，就是相关。',
-            },
-          },
-          {
-            id: 'path',
-            prompt: '召回路径能不能复查？',
-            before: {
-              label: '向量结果',
-              body: '检索结果不可解释。一段对话被切块之后，「谁在回复谁、属于哪个 PR」这些关系会消失。',
-            },
-            after: {
-              label: '沿引用走',
-              body: '每一步都能说清楚为什么。排查问题时，检索路径就是一条可以复现的链。',
-            },
-          },
-          {
-            id: 'update',
-            prompt: '新事件进来，索引要怎么更新？',
-            before: {
-              label: '重新嵌入',
-              body: '每条新事件都要付一次嵌入成本。持续在线时，这笔账算不过来。',
-            },
-            after: {
-              label: '挂上引用',
-              body: '新事件只需要挂上 ID 和引用，不需要把整库重新嵌入。',
-            },
-          },
-        ]}
-      />
+      <p>三条加在一起，就是我不再默认用向量去猜的原因。</p>
 
       <Heading id="chain">链式召回</Heading>
       <p>Inline 和 Spill 用到系统的各类对象上，就得到了链式召回。一次工具调用的返回结果，本身也照这个规矩来。返回的对象里，内联着下一跳关联对象的摘要和 ID。</p>
       <p>拿一条链走一遍。一条新消息触发处理，它的内联字段里有 thread_id。读这个 Thread，返回摘要，顺手内联处理它的 worker_session_id。读这个 Worker，返回状态摘要，也内联它订阅的另一个 Thread。读那个 Thread，拿到一场 PR 讨论的摘要。每一跳只展开一层，模型看到的就是摘要加下一跳 ID 的链条。需要就继续走，不需要就停，停在哪一层，手里的信息都够当下用。</p>
       <p>操作系统的惰性分页就是这个做法。页面不预先加载，缺页中断时才加载。上下文也不用一次装满，按需展开就好。</p>
       <p>Router 层还有个批处理，也服务于持续在线的场景。事件密集涌进来时，上一轮推理期间积压的多条事件，会自动合并进下一次 LLM 调用。事件到达速率提高四十倍，单次请求耗时的增长远慢于合并的条数。摊到每个决定上的推理时间，从 6.4 秒降到了 1.6 秒。突发流量是被吞吐吃掉的。</p>
-      <p>原文只给了这两个数，图上也就只有两点。中间档位原文没写，我也没补。</p>
-      <MetricChart
-        title="每个决定上的推理时间"
-        caption="数字来自正文对 Super-agent 批处理的转述。事件到达速率提高四十倍，积压事件合并进同一次调用之后，摊到每个决定上的推理时间从 6.4 秒降到 1.6 秒。两条柱按这组里的较大值缩放。"
-        series={[
-          { key: 'before', name: '未合并', tone: 'baseline' },
-          { key: 'after', name: '合并后', tone: 'good' },
-        ]}
-        groups={[
-          {
-            label: '每个决定',
-            bars: [
-              { key: 'before', value: 6.4, display: '6.4 秒' },
-              { key: 'after', value: 1.6, display: '1.6 秒' },
-            ],
-          },
-        ]}
-      />
       <img
         src={`${process.env.PUBLIC_URL}/context-window-as-cache-illustrations/02-chain-book.png`}
         alt="小黑守着一本只摊开一页的大笔记本，手里拿着摘要纸条"
@@ -219,53 +158,6 @@ export function PostContextMemory() {
 
       <Heading id="vector">什么时候才需要向量库</Heading>
       <p>向量库有它的位置，我把它排在最后。我的扩展路径从轻到重。先上 SQLite 的 FTS5 全文索引，零外部依赖，万级以下够用。FTS5 不够了，给结论表加一列关键词做倒排。再不够，把查记忆做成路由层的一个工具调用，让链式召回本身工具化。等真的到了跨仓库、跨语言、数据上万行的场景，才轮到向量库。</p>
-      <p>四层排好了。下面这张图把它们摊开，方便以后回看。</p>
-      <DotGrid
-        title="检索从轻到重"
-        caption="四层都来自这一节和文末附录的检索层级速查。颜色只区分先用前三层和最后才是向量库，没有额外的评分。"
-        columns={4}
-        legend={[
-          { tone: 'good', label: '先用这三层' },
-          { tone: 'baseline', label: '最后才是向量库' },
-        ]}
-        groups={[
-          {
-            id: 'layers',
-            title: '由左到右，从轻到重',
-            countLabel: '上一层失效，才付下一层的复杂度',
-            items: [
-              {
-                id: 'fts',
-                tone: 'good',
-                short: 'FTS5',
-                label: '第一层 · SQLite FTS5',
-                detail: '零外部依赖的全文索引。万级以下数据，毫秒返回。',
-              },
-              {
-                id: 'keyword',
-                tone: 'good',
-                short: '倒排',
-                label: '第二层 · 关键词倒排',
-                detail: '给结论表加一列关键词，覆盖 FTS5 分词不理想的场景。',
-              },
-              {
-                id: 'chain',
-                tone: 'good',
-                short: '链式',
-                label: '第三层 · 链式召回',
-                detail: '把「查记忆」做成路由层的一个工具调用，按引用图逐跳展开。',
-              },
-              {
-                id: 'vector',
-                tone: 'baseline',
-                short: '向量库',
-                label: '第四层 · 向量库',
-                detail: '只在跨仓库、跨语言、数据上万行，而且前三层都失效的时候引入。',
-              },
-            ],
-          },
-        ]}
-      />
       <p>这个排序背后就一个判断。每一层新加的复杂度，得由上一层的失效来付账。别人都在用，这个理由不成立。</p>
       <p>窗口就这么大，放什么进来，得按缓存的规矩来。我那个小系统眼下还用 SQL LIKE，几百行，够了。哪天不够了，再往下一层走。</p>
     </PostLayout>
